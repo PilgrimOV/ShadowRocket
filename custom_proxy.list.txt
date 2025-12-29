@@ -1,0 +1,40 @@
+# Chess.com
+# DOMAIN-SUFFIX,chess.com,PROXY,force-remote-dns
+# DOMAIN-SUFFIX,chesscomfiles.com,PROXY,force-remote-dns
+
+# Lichess
+# DOMAIN-SUFFIX,lichess.org,PROXY,force-remote-dns
+# DOMAIN-SUFFIX,lichess1.org,PROXY,force-remote-dns
+
+
+# 4PDA / Хабр
+DOMAIN-SUFFIX,4pda.to
+DOMAIN-SUFFIX,4pda.ru
+DOMAIN-SUFFIX,habr.com
+
+# Нейросети
+DOMAIN-SUFFIX,grok.com
+DOMAIN-SUFFIX,x.ai
+DOMAIN-SUFFIX,claude.ai
+DOMAIN-SUFFIX,anthropic.com
+
+# Диагностика сети / IP
+DOMAIN-SUFFIX,ipinfo.io
+DOMAIN-SUFFIX,ipify.org
+DOMAIN,api.ipify.org
+DOMAIN-SUFFIX,ifconfig.me
+DOMAIN-SUFFIX,icanhazip.com
+DOMAIN-SUFFIX,ip-api.com
+DOMAIN-SUFFIX,ipleak.net
+DOMAIN-SUFFIX,browserleaks.com
+DOMAIN-SUFFIX,speedtest.net
+DOMAIN-SUFFIX,fast.com
+DOMAIN,cp.cloudflare.com
+DOMAIN,speed.cloudflare.com
+DOMAIN-SUFFIX,ipchicken.com
+DOMAIN-SUFFIX,whatismyip.com
+
+# Трекеры
+DOMAIN-KEYWORD,rutor
+DOMAIN-KEYWORD,rutracker
+DOMAIN-KEYWORD,kinozal
