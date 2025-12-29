@@ -1,6 +1,5 @@
 # 4PDA / Хабр
 DOMAIN-SUFFIX,4pda.to
-DOMAIN-SUFFIX,4pda.ru
 DOMAIN-SUFFIX,habr.com
 
 # Нейросети
@@ -29,3 +28,6 @@ DOMAIN-SUFFIX,whatismyip.com
 DOMAIN-KEYWORD,rutor
 DOMAIN-KEYWORD,rutracker
 DOMAIN-KEYWORD,kinozal
+
+# Разные
+DOMAIN-SUFFIX,chess-results.com
