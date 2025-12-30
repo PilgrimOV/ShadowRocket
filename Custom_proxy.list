@@ -1,3 +1,7 @@
+# Шахматы
+DOMAIN-SUFFIX,chess-results.com
+DOMAIN-SUFFIX,chesscomfiles.com
+
 # 4PDA / Хабр
 DOMAIN-SUFFIX,4pda.to
 DOMAIN-SUFFIX,habr.com
@@ -30,4 +34,5 @@ DOMAIN-KEYWORD,rutracker
 DOMAIN-KEYWORD,kinozal
 
 # Разные
-DOMAIN-SUFFIX,chess-results.com
+DOMAIN-SUFFIX,crowdin.com
+DOMAIN-SUFFIX,mp3tag.app
