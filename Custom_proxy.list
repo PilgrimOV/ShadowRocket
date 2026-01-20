@@ -1,6 +1,10 @@
 # Шахматы
 DOMAIN-SUFFIX,chess-results.com
 DOMAIN-SUFFIX,chesscomfiles.com
+DOMAIN-SUFFIX,lichess.org
+DOMAIN-SUFFIX,lichess1.org
+DOMAIN-SUFFIX,lichess.ovh
+DOMAIN-SUFFIX,lichess.dev
 
 # 4PDA / Хабр
 DOMAIN-SUFFIX,4pda.to
