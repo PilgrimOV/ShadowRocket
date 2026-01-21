@@ -1,8 +1,4 @@
-#!name=Google-Gemini-IP
-#!desc=Google / Gemini official IP ranges (IPv4 + IPv6)
-#!author=you
-#!update=2025-12-24
-
+# Google / Gemini
 IP-CIDR,8.8.4.0/24
 IP-CIDR,8.8.8.0/24
 IP-CIDR,8.34.208.0/20
