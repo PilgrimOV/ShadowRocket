@@ -1,6 +1,10 @@
 # Разные
 DOMAIN-SUFFIX,yandex.net
 
+# Музыка
+DOMAIN-SUFFIX,mp3party.net
+DOMAIN-SUFFIX,muzmo.cc
+
 # Apple
 DOMAIN-SUFFIX,apple.com
 DOMAIN-SUFFIX,icloud.com
@@ -11,10 +15,6 @@ DOMAIN-SUFFIX,aaplimg.com
 DOMAIN-SUFFIX,me.com
 DOMAIN-SUFFIX,apple-cloudkit.com
 DOMAIN-SUFFIX,apple-dns.net
-
-# Музыка
-DOMAIN-SUFFIX,mp3party.net
-DOMAIN-SUFFIX,muzmo.cc
 
 # VK
 DOMAIN-SUFFIX,vk.com
