@@ -19,19 +19,24 @@ DOMAIN-SUFFIX,apple-dns.net
 
 # VK
 DOMAIN-SUFFIX,vk.com
-DOMAIN-SUFFIX,vk.ru
 DOMAIN-SUFFIX,vk.me
 DOMAIN-SUFFIX,vk.cc
 DOMAIN-SUFFIX,vk.link
-DOMAIN-SUFFIX,vk.team
+DOMAIN-SUFFIX,vkontakte.com
+DOMAIN-SUFFIX,userapi.com
+DOMAIN-SUFFIX,vk-cdn.net
+DOMAIN-SUFFIX,vk-cdn.me
+DOMAIN-SUFFIX,vkuser.net
+DOMAIN-SUFFIX,vkuseraudio.com
+DOMAIN-SUFFIX,vkuseraudio.net
+DOMAIN-SUFFIX,vkuservideo.com
+DOMAIN-SUFFIX,vkuservideo.net
+DOMAIN-SUFFIX,vkuserlive.com
+DOMAIN-SUFFIX,vkuserlive.net
 DOMAIN-SUFFIX,vk-portal.net
 DOMAIN-SUFFIX,vkcache.com
 DOMAIN-SUFFIX,vkgo.app
 DOMAIN-SUFFIX,vklive.app
 DOMAIN-SUFFIX,vkmessenger.app
-DOMAIN-SUFFIX,vkuservideo.net
-DOMAIN-SUFFIX,vkuservideo.com
-DOMAIN-SUFFIX,vkuserlive.net
-DOMAIN-SUFFIX,vkuserphoto.ru
+DOMAIN-SUFFIX,vkmessenger.com
 DOMAIN-SUFFIX,mycdn.me
-DOMAIN-SUFFIX,vkuseraudio.net
