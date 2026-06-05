@@ -1,4 +1,6 @@
-# RULE-SET,https://raw.githubusercontent.com/PilgrimOV/ShadowRocket/main/Banking_direct.list,DIRECT
+# Banking_direct.list — банки, платежи, госинфраструктура DIRECT
+# Generated: 2026-06-04
+# Shadowrocket rules
 
 # Госуслуги / государственные сайты / регулятор
 DOMAIN-SUFFIX,gov.ru
@@ -18,11 +20,12 @@ DOMAIN-SUFFIX,mir-platform.ru
 DOMAIN-SUFFIX,ebs.ru
 DOMAIN,bio.rt.ru
 
-# Платёжные шлюзы и эквайринг РФ
+# Платёжные шлюзы, эквайринг, переводы РФ
 DOMAIN-SUFFIX,yoomoney.ru
 DOMAIN-SUFFIX,yookassa.ru
 DOMAIN-SUFFIX,robokassa.ru
 DOMAIN-SUFFIX,cloudpayments.ru
+DOMAIN-SUFFIX,cloudpayments.world
 DOMAIN-SUFFIX,payanyway.ru
 DOMAIN-SUFFIX,paymaster.ru
 DOMAIN-SUFFIX,paykeeper.ru
@@ -30,6 +33,19 @@ DOMAIN-SUFFIX,uniteller.ru
 DOMAIN-SUFFIX,acquiring.ru
 DOMAIN-SUFFIX,faktura.ru
 DOMAIN-SUFFIX,cft.ru
+DOMAIN-SUFFIX,koronapay.com
+DOMAIN-SUFFIX,korona-perevod.com
+DOMAIN-SUFFIX,corona-perevod.com
+DOMAIN-SUFFIX,coronaperevod.com
+DOMAIN-SUFFIX,perevodkorona.com
+DOMAIN-SUFFIX,koshelek.app
+DOMAIN-SUFFIX,netmonet.co
+
+# Биржевая / клиринговая инфраструктура
+DOMAIN-SUFFIX,moex.com
+DOMAIN-SUFFIX,nationalclearingcenter.com
+DOMAIN-SUFFIX,nationalclearingcentre.com
+DOMAIN-SUFFIX,ncc-qccp.com
 
 # ВТБ
 DOMAIN-SUFFIX,vtb.ru
@@ -41,6 +57,15 @@ DOMAIN-SUFFIX,vtb-auto.ru
 DOMAIN-SUFFIX,vtbrussia.ru
 DOMAIN-SUFFIX,vtbstrana.ru
 DOMAIN-SUFFIX,vtbcareer.com
+DOMAIN-SUFFIX,vtb-direct.com
+DOMAIN-SUFFIX,vtb-russia.com
+DOMAIN-SUFFIX,vtb.bank.in
+DOMAIN-SUFFIX,vtb.digital
+DOMAIN-SUFFIX,vtb24.com
+DOMAIN-SUFFIX,vtbglobalperspectives.com
+DOMAIN-SUFFIX,vtbindia.com
+DOMAIN-SUFFIX,vtbpartners.com
+DOMAIN-SUFFIX,vtbrussia.com
 
 # Сбер
 DOMAIN-SUFFIX,sber.ru
@@ -53,8 +78,19 @@ DOMAIN-SUFFIX,sberbankvmeste.ru
 DOMAIN-SUFFIX,sberindex.ru
 DOMAIN-SUFFIX,sberclickstream.ru
 DOMAIN-SUFFIX,sberprime.ru
+DOMAIN-SUFFIX,sber.me
+DOMAIN-SUFFIX,sber.pro
+DOMAIN-SUFFIX,sber.world
+DOMAIN-SUFFIX,sber.ws
+DOMAIN-SUFFIX,sberauto.com
+DOMAIN-SUFFIX,sbercloud.tech
+DOMAIN-SUFFIX,sberdocs.com
+DOMAIN-SUFFIX,sberfinance.net
+DOMAIN-SUFFIX,sberlabs.com
+DOMAIN-SUFFIX,spasibo.digital
+DOMAIN-SUFFIX,spasibo.market
 
-# Т-Банк
+# Т-Банк / Тинькофф
 DOMAIN-SUFFIX,tbank.ru
 DOMAIN-SUFFIX,tinkoff.ru
 DOMAIN-SUFFIX,tcsbank.ru
@@ -63,28 +99,67 @@ DOMAIN-SUFFIX,tinkoffcdn.ru
 DOMAIN-SUFFIX,tinkoffinsurance.ru
 DOMAIN-SUFFIX,tinkoffleasing.ru
 DOMAIN-SUFFIX,dolyame.ru
+DOMAIN-SUFFIX,t-finance.group
+DOMAIN-SUFFIX,t-tech.dev
+DOMAIN-SUFFIX,t-tech.team
+DOMAIN-SUFFIX,t.finance
+DOMAIN-SUFFIX,tinkoff-group.com
+DOMAIN-SUFFIX,tinkoff.ai
+DOMAIN-SUFFIX,tinkoffdigital.com
+DOMAIN-SUFFIX,tinkoffgroup.com
+DOMAIN-SUFFIX,tinkoffmobile.com
+DOMAIN-SUFFIX,tbank-online.com
 
-# Системно значимые и крупные банки РФ
+# Альфа-Банк
 DOMAIN-SUFFIX,alfabank.ru
 DOMAIN-SUFFIX,alfa-bank.ru
 DOMAIN-SUFFIX,alfabank.com
+DOMAIN-SUFFIX,alfa-bank.com
+DOMAIN-SUFFIX,alfa-finance.com
+DOMAIN-SUFFIX,alfa-fx.com
+DOMAIN-SUFFIX,alfa-pc.com
+DOMAIN-SUFFIX,alfafinance.biz
+DOMAIN-SUFFIX,alfafuture.com
+DOMAIN-SUFFIX,alfafx.com
+DOMAIN-SUFFIX,alfaprivate.com
+DOMAIN-SUFFIX,investalfabank.com
+
+# Газпромбанк
 DOMAIN-SUFFIX,gazprombank.ru
 DOMAIN-SUFFIX,gpb.ru
 DOMAIN-SUFFIX,gazprompay.ru
 DOMAIN-SUFFIX,gpbbroker.ru
 DOMAIN-SUFFIX,gpbroker.ru
+DOMAIN-SUFFIX,gazprombank.com
+DOMAIN-SUFFIX,gazprombank.investments
+DOMAIN-SUFFIX,gazprombank.tech
+
+# Совкомбанк / Халва
+DOMAIN-SUFFIX,sovcombank.ru
+DOMAIN-SUFFIX,sovcombank.com
+DOMAIN-SUFFIX,sovcombank.business
+DOMAIN-SUFFIX,sovcombank.credit
+DOMAIN-SUFFIX,sovcombank.info
+DOMAIN-SUFFIX,halvacard.ru
+DOMAIN-SUFFIX,gethalva.ru
+DOMAIN-SUFFIX,halva.email
+DOMAIN-SUFFIX,halva.energy
+DOMAIN-SUFFIX,halva.im
+DOMAIN-SUFFIX,halva.promo
+DOMAIN-SUFFIX,halva.tel
+
+# Россельхозбанк
+DOMAIN-SUFFIX,rshb.ru
+DOMAIN-SUFFIX,россельхозбанк.рф
+DOMAIN-SUFFIX,rshb.pro
+
+# Другие системно значимые банки РФ
 DOMAIN-SUFFIX,mkb.ru
 DOMAIN-SUFFIX,psbank.ru
 DOMAIN-SUFFIX,psbinvest.ru
-DOMAIN-SUFFIX,rshb.ru
-DOMAIN-SUFFIX,россельхозбанк.рф
 DOMAIN-SUFFIX,raiffeisen.ru
 DOMAIN-SUFFIX,raif.ru
 DOMAIN-SUFFIX,raiffeisenbank.ru
-DOMAIN-SUFFIX,sovcombank.ru
-DOMAIN-SUFFIX,sovcombank.com
-DOMAIN-SUFFIX,halvacard.ru
-DOMAIN-SUFFIX,gethalva.ru
 DOMAIN-SUFFIX,bankdomrf.ru
 DOMAIN-SUFFIX,domrfbank.ru
 DOMAIN-SUFFIX,unicredit.ru
@@ -171,6 +246,9 @@ DOMAIN-SUFFIX,investtorgbank.ru
 DOMAIN-SUFFIX,itbank.ru
 DOMAIN-SUFFIX,jtbank.ru
 DOMAIN-SUFFIX,resocreditbank.ru
+DOMAIN-SUFFIX,bank131.com
+DOMAIN-SUFFIX,alefbank.com
+DOMAIN-SUFFIX,tochka-tech.com
 DOMAIN-SUFFIX,ozonbankdocs.ru
 DOMAIN,finance.ozon.ru
 DOMAIN,bank.yandex.ru
