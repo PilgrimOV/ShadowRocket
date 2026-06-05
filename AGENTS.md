@@ -8,17 +8,21 @@ This repository stores live user-managed Shadowrocket configs and rule lists.
 Do not create parallel editable copies in other repositories. If another repo
 needs access, use links or documented paths back to this repository.
 
-Primary files:
+Active layout:
 
-- `Doma_Wi-Fi.conf`
-- `Mobile_Whitelist.conf`
-- `Work.conf`
-- `Banking_direct.list`
-- `Custom_direct_candidates.list`
-- `Custom_direct.list`
-- `Custom_proxy.list`
-- `Gemini_domains.list`
-- `Gemini_ip.list`
+- `configs/Doma_Wi-Fi.conf`
+- `configs/Ne_doma_Whitelist.conf`
+- `configs/Work.conf`
+- `lists/Banking_direct.list`
+- `lists/Custom_direct.list`
+- `lists/Custom_proxy.list`
+- `lists/Gemini_domains.list`
+- `lists/Gemini_ip.list`
+
+Archive layout:
+
+- `configs_old/` contains historical profiles and is not part of the active
+  edit surface unless the user explicitly asks to change it.
 
 ## Hard Edit Rules
 
