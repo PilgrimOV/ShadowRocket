@@ -329,18 +329,6 @@ DOMAIN-SUFFIX,kaspersky.com
 DOMAIN-SUFFIX,myoffice.team
 DOMAIN-SUFFIX,tarantool.io
 
-# Tencent
-DOMAIN-SUFFIX,tencent.com
-DOMAIN-SUFFIX,tencentcloud.com
-DOMAIN-SUFFIX,tencentcloudapi.com
-DOMAIN-SUFFIX,myqcloud.com
-DOMAIN-SUFFIX,qcloud.com
-DOMAIN-SUFFIX,gtimg.com
-DOMAIN-SUFFIX,qq.com
-DOMAIN-SUFFIX,qpic.cn
-DOMAIN-SUFFIX,weixin.com
-DOMAIN-SUFFIX,wechat.com
-
 # Разные
 DOMAIN-SUFFIX,mp3party.net
 DOMAIN-SUFFIX,muzmo.cc
