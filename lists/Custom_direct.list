@@ -2,6 +2,9 @@
 # Generated: 2026-06-04
 # Shadowrocket rules
 
+# API
+DOMAIN-SUFFIX,asxs.top
+
 # Яндекс / Yandex / Yango
 DOMAIN-SUFFIX,clstorage.net
 DOMAIN-SUFFIX,meteum.ai
