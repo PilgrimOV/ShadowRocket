@@ -48,7 +48,6 @@ DOMAIN-SUFFIX,nationalclearingcentre.com
 DOMAIN-SUFFIX,ncc-qccp.com
 
 # ВТБ
-DOMAIN-SUFFIX,loonabrowser.ru
 DOMAIN-SUFFIX,vtb.ru
 DOMAIN-SUFFIX,vtb.com
 DOMAIN-SUFFIX,vtb24.ru
@@ -67,6 +66,8 @@ DOMAIN-SUFFIX,vtbglobalperspectives.com
 DOMAIN-SUFFIX,vtbindia.com
 DOMAIN-SUFFIX,vtbpartners.com
 DOMAIN-SUFFIX,vtbrussia.com
+DOMAIN-SUFFIX,f6.security
+DOMAIN-SUFFIX,loonabrowser.ru
 
 # Сбер
 DOMAIN-SUFFIX,sber.ru
