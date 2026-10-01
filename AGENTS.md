@@ -18,6 +18,9 @@ Active layout:
 - `lists/Custom_proxy.list`
 - `lists/Gemini_domains.list`
 - `lists/Gemini_ip.list`
+- `scripts/subscriptions/` stores credential-free subscription display
+  scripts and their deterministic checks. Start from its `README.md`; keep
+  `Улица [резерв]` intact as the reserve group/scene naming contract.
 
 Archive layout:
 
