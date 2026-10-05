@@ -12,6 +12,24 @@ files, Node.js, external service, credentials, or subscription URL.
 | [mixed-us-turkey.js](mixed-us-turkey.js) | ✅ Улица + Дом; ordinary Home US/Turkey allowed. |
 | [street-reserve.js](street-reserve.js) | 🔑 Улица; all healthy countries retained. |
 
+Each complete file fits in a single 3,900-character message. The build checks
+the stricter UTF-16 length (supplementary characters count twice):
+
+| File | Characters (Unicode code points) | UTF-16 units |
+| --- | ---: | ---: |
+| home.js | 3,672 | 3,674 |
+| home-us-turkey.js | 3,671 | 3,673 |
+| mixed.js | 3,673 | 3,675 |
+| mixed-us-turkey.js | 3,672 | 3,674 |
+| street-reserve.js | 3,674 | 3,676 |
+
+Copy the **entire file as plain text**, including its CJK characters; paste the
+whole received message into Script. Those characters carry losslessly packed
+JavaScript, not server names. UTF-8 byte sizes are larger than character counts.
+The script unpacks itself once when loaded and needs no download or decoder
+installed on the device. No naming, filtering, sorting, or future-provider
+handling was removed to meet the message limit.
+
 ## Naming and filtering
 
 Names use `flag marker Дом/Улица country city/note marker ordinal`.
@@ -89,8 +107,13 @@ exclude Home Netherlands with `^(?!.*Дом\s+Нидерланды).*$` instead.
 Keep `naming.js` readable; edit it and the five view settings in `build.cjs`.
 The pinned [Terser](https://github.com/terser/terser#api-reference) build dependency
 removes formatting/comments and shortens local identifiers (`compress: false`);
-it does not rewrite logic or rename fields. Only the five pasteable outputs
-are compact. Install the build dependency in this directory, then regenerate:
+it does not rewrite logic or rename fields. `build.cjs` then losslessly packs
+that code with LZW and stores variable-width codes as printable 14-bit CJK
+characters. A small embedded decoder restores the exact code before evaluating
+the static filter function. Provider data is never evaluated as code. The build
+verifies exact unpacking and rejects output over 3,900 UTF-16 units. Only the
+five pasteable outputs are packed; keep edits in the readable source.
+Install the build dependency in this directory, then regenerate:
 
 ```sh
 npm ci --prefix scripts/subscriptions --ignore-scripts --no-audit --no-fund
@@ -107,7 +130,11 @@ check uses an equivalent wrapper in Node's VM. Both check retention, ordering,
 markers, country normalization, unique names, unchanged connection fields,
 and repeated processing. Both engines also compare compact output with the
 readable source for every fixture. No private subscription data is read by
-these checks.
+these checks. The ordinary check also verifies message size, UTF-8 copying,
+and NFC normalization stability. On 2026-10-05 the packed outputs passed all
+312 scenarios in both engines. JavaScriptCore verification on this Mac does
+not constitute a live test on an iPhone or every other supported device; the
+existing native wrapper and runtime requirements still apply.
 
 The generated files deliberately close the native per-node body, assign the
 whole-list `$js_filter_servers` entry, and leave a tail for the native wrapper

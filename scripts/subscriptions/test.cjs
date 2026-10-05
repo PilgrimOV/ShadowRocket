@@ -172,7 +172,11 @@ function wrap(source) {
 const suites = [];
 const readableSource = fs.readFileSync(path.join(__dirname,'naming.js'),'utf8');
 for (const [file, [mode, extra]] of Object.entries(views)) {
-  assert.equal(fs.readFileSync(path.join(__dirname,file),'utf8'), output(mode,extra), 'stale output ' + file);
+  const source = fs.readFileSync(path.join(__dirname,file),'utf8');
+  assert.equal(source, output(mode,extra), 'stale output ' + file);
+  assert(source.length <= 3900, file + ': conservative message length');
+  assert.equal(Buffer.from(source,'utf8').toString('utf8'),source,file + ': UTF-8 copy round trip');
+  assert.equal(source.normalize('NFC'),source,file + ': Unicode normalization stability');
   const context = vm.createContext({});
   assert.equal(vm.runInContext(wrap(output(mode,extra)),context), true);
   const cases = fixtures.filter(x => x.files.includes(file));
@@ -187,7 +191,7 @@ for (const [file, [mode, extra]] of Object.entries(views)) {
     validate(file,c,result,run);
   }
   suites.push({file, mode, extra, source:output(mode,extra), cases});
-  console.log('PASS: ' + file + ' (' + cases.length + ' scenarios)');
+  console.log('PASS: ' + file + ' (' + cases.length + ' scenarios; ' + source.length + ' UTF-16 units)');
 }
 function validate(file, c, result, run) {
   const label = file + ': ' + c.name;
