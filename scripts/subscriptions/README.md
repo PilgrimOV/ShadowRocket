@@ -14,19 +14,23 @@ files, Node.js, external service, credentials, or subscription URL.
 
 ## Naming and filtering
 
-Names use `flag marker Дом/Улица [country] city/note/ordinal`. The accepted
-Russian country abbreviations are fixed in `naming.js` and shared by all
-views. A flag takes precedence over country spelling; recognized names are
-a fallback when the flag is missing. Unknown countries stay visible. For an
-unlisted flag, `Intl.DisplayNames` supplies the Russian name shortened to five
-characters; without that API the country code remains visible. City spelling
-is preserved. Known material aliases and provider ordinals are removed;
-unfamiliar meaningful notes stay visible.
+Names use `flag marker Дом/Улица country city/note marker ordinal`.
+Country names are full Russian names, without abbreviations or brackets.
+The shared vocabulary in `naming.js` uses, for example, `Нидерланды`,
+`Германия`, and `Соединённые Штаты Америки`. A flag takes precedence over
+country spelling; recognized names are a fallback when the flag is missing.
+Legacy abbreviations are recognized on input but never rendered. Unknown
+countries stay visible. For an unlisted flag, `Intl.DisplayNames` supplies
+the full Russian name; without that API the country code remains visible.
+City spelling is preserved. Known material aliases and provider decoration
+are removed; unfamiliar meaningful notes stay visible as plain text.
+The mixed views remove the standalone word `Extra` case-insensitively.
+German Home Torrent nodes display `Торрент 🎬`.
 
 Home views use one leading lightning normally, two for a provider lightning,
 and three for Hysteria. Hysteria names and versions disappear. The returned
 Home list is ordered `⚡⚡⚡`, `⚡⚡`, `⚡`, preserving provider order for ties.
-Mixed/key views have exactly one trailing lightning for a provider lightning
+Mixed/key views have exactly one lightning after the notes for a provider lightning
 or Hysteria, including when both occur. Other protocol names are omitted
 there when redundant. For a Home node in an excluded country, a title-only
 protocol label is kept if metadata is missing, so repeat processing cannot
@@ -51,24 +55,31 @@ labels, `для работы`, and completed maintenance remain visible. Torrent
 retained as `Торрент`; it does not by itself override a country exclusion.
 
 Full rendered names determine collisions within a subscription. The first
-has no ordinal; identical names get `2`, `3`, etc., before a trailing lightning.
+has no ordinal; identical names get `2`, `3`, etc., at the very end, after
+any lightning or note.
 Literal existing suffixes are reserved to prevent generated-name collisions.
 Fresh provider snapshots recalculate ordinals; these numbers are not
 permanent node identities. No field other than a retained node's title changes.
 
 ## Group and scene filters
 
-The new key view uses `🔑 Улица [country]`, replacing the old
-`Улица [резерв]` contract. Migrate filters that depended on `[резерв]` when
-installing. Configs/groups/scenes are not changed by a source commit.
+All views now omit brackets and use full country names. Migrate filters
+that depended on `[резерв]`, `[Нидер]`, or other abbreviated bracketed names
+when installing. Configs/groups/scenes are not changed by a source commit.
 
 | Candidate pool | Positive name regex |
 | --- | --- |
-| All Home Netherlands | `Дом \[Нидер\]` |
-| Lightning Home Netherlands | `⚡{1,3} Дом \[Нидер\]` |
-| Mixed Home Netherlands | `✅ Дом \[Нидер\]` |
-| All Street Germany | `Улица \[Герм\]` |
-| Key Street Germany | `🔑 Улица \[Герм\]` |
+| All Home Netherlands | `Дом Нидерланды` |
+| Lightning Home Netherlands | `⚡{1,3} Дом Нидерланды` |
+| Mixed Home Netherlands | `✅ Дом Нидерланды` |
+| All Street Germany | `Улица Германия` |
+| Key Street Germany | `🔑 Улица Германия` |
+
+No bracket escapes are needed. `\s+` can replace a space to tolerate
+different spacing. Preserve the name's case unless case-insensitive matching
+is enabled. These positive patterns retain matching nodes; use the same
+pattern in an exclusion field to reject them. Through an inclusion field,
+exclude Home Netherlands with `^(?!.*Дом\s+Нидерланды).*$` instead.
 
 ## Source and verification
 

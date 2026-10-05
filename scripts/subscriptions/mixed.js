@@ -7,22 +7,93 @@ $js_filter_servers = function ($servers) {
 };
 // Shared source; build.cjs embeds this function into the five pasteable filters.
 function subscriptionNames(servers, mode, allowUsTurkey) {
-  var shorts = {
-    NL:"Нидер", DE:"Герм", FR:"Фран", AT:"Австр", FI:"Финл", SE:"Швец",
-    CH:"Швейц", NO:"Норв", HU:"Венгр", SK:"Слова", SI:"Слове", RO:"Рум",
-    PL:"Поль", CZ:"Чех", DK:"Дан", EE:"Эстон", ES:"Исп", IT:"Итал",
-    IE:"Ирл", LT:"Литва", LV:"Латв", LU:"Люкс", MD:"Молд", RS:"Серб",
-    TR:"Турц", US:"США", RU:"Рос", BY:"Белар", JP:"Япон", BE:"Белг",
-    BG:"Болг", GB:"Брит", HR:"Хорв", KZ:"Казах", NG:"Нигер", CA:"Канад",
-    UA:"Укра", IL:"Изр", AU:"Австл", SG:"Синг", BR:"Браз", MX:"Мекс",
-    PT:"Порт", MY:"Малай", KR:"Корея", ZA:"ЮАР", HK:"Гонк", AR:"Арген",
-    CO:"Колум", IN:"Индия", AE:"ОАЭ", PE:"Перу", GR:"Грец", KG:"Кирг",
-    BH:"Бахр", SA:"Сауд", TH:"Таил", QA:"Катар", CR:"Коста", EC:"Эквад",
-    ID:"Индон", PK:"Пакис", IQ:"Ирак", IS:"Исл", CL:"Чили", GE:"Груз",
-    UZ:"Узбек", MK:"Макед", CY:"Кипр", KH:"Камб", BD:"Бангл", TW:"Тайв",
-    PH:"Филип", AL:"Алб", BA:"Босни", AZ:"Азерб", CN:"Китай", AQ:"Антар",
-    TJ:"Тадж", EG:"Егип", MN:"Монг", BN:"Бруне", LK:"ШриЛ", SS:"ЮСуд",
-    LI:"Лихт", VN:"Вьетн"
+  var vocabulary = {
+    NL:["Нидерланды", "Нидер"],
+    DE:["Германия", "Герм"],
+    FR:["Франция", "Фран"],
+    AT:["Австрия", "Австр"],
+    FI:["Финляндия", "Финл"],
+    SE:["Швеция", "Швец"],
+    CH:["Швейцария", "Швейц"],
+    NO:["Норвегия", "Норв"],
+    HU:["Венгрия", "Венгр"],
+    SK:["Словакия", "Слова"],
+    SI:["Словения", "Слове"],
+    RO:["Румыния", "Рум"],
+    PL:["Польша", "Поль"],
+    CZ:["Чехия", "Чех"],
+    DK:["Дания", "Дан"],
+    EE:["Эстония", "Эстон"],
+    ES:["Испания", "Исп"],
+    IT:["Италия", "Итал"],
+    IE:["Ирландия", "Ирл"],
+    LT:["Литва", "Литва"],
+    LV:["Латвия", "Латв"],
+    LU:["Люксембург", "Люкс"],
+    MD:["Молдова", "Молд"],
+    RS:["Сербия", "Серб"],
+    TR:["Турция", "Турц"],
+    US:["Соединённые Штаты Америки", "США"],
+    RU:["Россия", "Рос"],
+    BY:["Беларусь", "Белар"],
+    JP:["Япония", "Япон"],
+    BE:["Бельгия", "Белг"],
+    BG:["Болгария", "Болг"],
+    GB:["Великобритания", "Брит"],
+    HR:["Хорватия", "Хорв"],
+    KZ:["Казахстан", "Казах"],
+    NG:["Нигерия", "Нигер"],
+    CA:["Канада", "Канад"],
+    UA:["Украина", "Укра"],
+    IL:["Израиль", "Изр"],
+    AU:["Австралия", "Австл"],
+    SG:["Сингапур", "Синг"],
+    BR:["Бразилия", "Браз"],
+    MX:["Мексика", "Мекс"],
+    PT:["Португалия", "Порт"],
+    MY:["Малайзия", "Малай"],
+    KR:["Южная Корея", "Корея"],
+    ZA:["Южно-Африканская Республика", "ЮАР"],
+    HK:["Гонконг", "Гонк"],
+    AR:["Аргентина", "Арген"],
+    CO:["Колумбия", "Колум"],
+    IN:["Индия", "Индия"],
+    AE:["Объединённые Арабские Эмираты", "ОАЭ"],
+    PE:["Перу", "Перу"],
+    GR:["Греция", "Грец"],
+    KG:["Кыргызстан", "Кирг"],
+    BH:["Бахрейн", "Бахр"],
+    SA:["Саудовская Аравия", "Сауд"],
+    TH:["Таиланд", "Таил"],
+    QA:["Катар", "Катар"],
+    CR:["Коста-Рика", "Коста"],
+    EC:["Эквадор", "Эквад"],
+    ID:["Индонезия", "Индон"],
+    PK:["Пакистан", "Пакис"],
+    IQ:["Ирак", "Ирак"],
+    IS:["Исландия", "Исл"],
+    CL:["Чили", "Чили"],
+    GE:["Грузия", "Груз"],
+    UZ:["Узбекистан", "Узбек"],
+    MK:["Северная Македония", "Макед"],
+    CY:["Кипр", "Кипр"],
+    KH:["Камбоджа", "Камб"],
+    BD:["Бангладеш", "Бангл"],
+    TW:["Тайвань", "Тайв"],
+    PH:["Филиппины", "Филип"],
+    AL:["Албания", "Алб"],
+    BA:["Босния и Герцеговина", "Босни"],
+    AZ:["Азербайджан", "Азерб"],
+    CN:["Китай", "Китай"],
+    AQ:["Антарктида", "Антар"],
+    TJ:["Таджикистан", "Тадж"],
+    EG:["Египет", "Егип"],
+    MN:["Монголия", "Монг"],
+    BN:["Бруней", "Бруне"],
+    LK:["Шри-Ланка", "ШриЛ"],
+    SS:["Южный Судан", "ЮСуд"],
+    LI:["Лихтенштейн", "Лихт"],
+    VN:["Вьетнам", "Вьетн"]
   };
   var extraNames = {
     RU:"Россия|Russia", BY:"Беларусь|Белоруссия|Belarus", JP:"Япония|Japan",
@@ -33,7 +104,7 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     CN:"Китай|China", TR:"Турция|Turkey|Türkiye", HK:"Гонконг|Hong Kong",
     TW:"Тайвань|Taiwan", VN:"Вьетнам|Vietnam"
   };
-  var countries = {}, codes = Object.keys(shorts), letters = "A-Za-zА-Яа-яЁё", locales;
+  var countries = {}, codes = Object.keys(vocabulary), letters = "A-Za-zА-Яа-яЁё", locales;
   try { locales = [new Intl.DisplayNames(["ru"], {type:"region"}), new Intl.DisplayNames(["en"], {type:"region"})]; } catch (_) {}
   function escape(s) { return s.replace(/[.*+?^{}()|[\]\\$]/g, "\\$&"); }
   function countryInfo(code) {
@@ -43,10 +114,12 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     if (locales) {
       try { full = locales[0].of(code); names.push(full, locales[1].of(code)); } catch (_) {}
     }
-    var short = shorts[code] || (full && full.slice(0, 5)) || code;
-    names.push(short);
-    return countries[code] = {short:short, pattern:new RegExp("(^|[^" + letters + "])(?:" +
-      names.filter(Boolean).map(escape).join("|") + ")(?=$|[^" + letters + "])", "gi")};
+    var known = vocabulary[code], label = known ? known[0] : full || code;
+    names.push(label);
+    if (known) names.push(known[1]);
+    names = names.filter(Boolean).sort(function (a, b) { return b.length - a.length; });
+    return countries[code] = {label:label.replace(/[\[\](){}]/g, ""), pattern:new RegExp("(^|[^" + letters + "])(?:" +
+      names.map(escape).join("|") + ")(?=$|[^" + letters + "])", "gi")};
   }
   codes.forEach(countryInfo);
   var blocked = ("NG CA GB UA IL AU SG BR MX PT MY JP KR ZA HK AR CO IN AE PE GR KG BH KZ SA TH QA CR EC ID PK IQ IS CL GE UZ MK HR CY KH BD TW PH AL BA AZ BY CN AQ TJ EG MN BN LK SS LI" +
@@ -67,7 +140,7 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
   }
   function tidy(s) {
     return s.replace(/[\u{1F1E6}-\u{1F1FF}⚡✅🔑]/gu, "")
-      .replace(/\[/g, "(").replace(/\]/g, ")").replace(/\(\s*\)/g, "")
+      .replace(/[\[\](){}]/g, " ")
       .replace(/[,|;·]+/g, " ").replace(/^[\s:_–—-]+|[\s:_–—-]+$/g, "")
       .replace(/\s+[–—-]\s+/g, " ").replace(/\s+/g, " ").trim();
   }
@@ -80,7 +153,7 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
   function countryOf(flag, s) {
     if (flag) return Array.from(flag).map(function (c) { return String.fromCharCode(c.codePointAt(0) - 0x1F1E6 + 65); }).join("");
     s = s.replace(protocols, "");
-    if (/^[A-Z]{2}$/.test(s.trim()) && shorts[s.trim()]) return s.trim();
+    if (/^[A-Z]{2}$/.test(s.trim()) && vocabulary[s.trim()]) return s.trim();
     for (var i = 0; i < codes.length; i++) {
       countries[codes[i]].pattern.lastIndex = 0;
       if (countries[codes[i]].pattern.test(s)) return codes[i];
@@ -89,18 +162,22 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
   }
   function countryLabel(code) {
     var info = countryInfo(code);
-    return info ? info.short : "?";
+    return info ? info.label : "?";
   }
   function render(server, index) {
     var original = String(server.title || "").replace(/[\uFE0E\uFE0F\u200B]/g, ""), flag = (original.match(flags) || [""])[0];
     if (unavailable(original)) return null;
     var name = original.replace(flags, "").trim();
     var formatted = name.match(/^(⚡{1,3}|✅|🔑)\s*(Дом|Улица)\s*\[([^\]]+)\]\s*(.*)$/u);
+    if (!formatted) {
+      var plain = name.match(/^(⚡{1,3}|✅|🔑)\s*(Дом|Улица)\s+(.+)$/u);
+      if (plain) formatted = [plain[0], plain[1], plain[2], "", plain[3]];
+    }
     var providerLightning = /⚡/.test(name), oldLevel = 0;
     if (formatted) {
       oldLevel = /^⚡/.test(formatted[1]) ? formatted[1].length : 0;
       providerLightning = oldLevel ? oldLevel === 2 : /⚡/.test(formatted[4]);
-      name = formatted[3] + " " + formatted[4];
+      name = (formatted[3] ? formatted[3] + " " : "") + formatted[4];
     }
     name = name.replace(/🔑\s*Улица\s*\[резерв\]/g, "");
     var roleTitle = original.replace(/(?:\b(?:no|non|not|without)[\s_-]*|без\s*)(?:whitelist|street|улиц[аы])/gi, "");
@@ -109,7 +186,8 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
        /(?:^|[^A-Za-zА-Яа-яЁё])(?:Улица|Street)(?=$|[^A-Za-zА-Яа-яЁё])/i.test(roleTitle)));
     var country = countryOf(flag, name);
     countryInfo(country);
-    if (formatted && (formatted[3] === countryLabel(country) || formatted[3] === "резерв")) name = formatted[4];
+    if (formatted && (formatted[3] === "резерв" || formatted[3] === "?")) name = formatted[4];
+    if (formatted && !country) name = name.replace(/^\?\s*/, "");
     if (!street && /^(RU|BY|JP)$/.test(country)) return null;
     var type = text(server.type), transport = text(server.obfs) || text(server.transport);
     var hysteria = oldLevel === 3 || new RegExp(hySource, "i").test(name + " " + type);
@@ -121,9 +199,11 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
       .replace(/\bADS\b/gi, "").replace(/whitelist/gi, "")
       .replace(/(?:^|[^A-Za-zА-Яа-яЁё])(?:Обход|Дом|Улица|Home|Street)(?=$|[^A-Za-zА-Яа-яЁё])/gi, " ");
     name = stripCountry(name, country);
+    if (mode === "mixed") name = name.replace(/\bExtra\b/gi, "");
     var annotationEvidence = name.replace(protocols, "").replace(cities, "").replace(/\btorrent\b|торрент|для\s+работы/gi, "");
     var annotated = /[|[(][^|[\]()]*[A-Za-zА-Яа-яЁё][^|[\]()]*[|\])]?/.test(annotationEvidence) ||
-      /скорост|speed|fast|turbo|protocol|transport|протокол|транспорт/i.test(annotationEvidence);
+      /скорост|speed|fast|turbo|protocol|transport|протокол|транспорт/i.test(annotationEvidence) ||
+      !!(formatted && new RegExp("[" + letters + "]").test(annotationEvidence));
     var special = providerLightning || hysteria || metadataSpecial || protocolSpecial || annotated;
     if (!street && !special && blocked.indexOf(country) >= 0) return null;
 
@@ -138,7 +218,10 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     // A title-only protocol is still needed for a Home exception on repeat
     // processing when the app supplies no matching protocol/transport field.
     if (mode === "home" || (!street && blocked.indexOf(country) >= 0 && protocolSpecial && !metadataSpecial)) {
-      labels.forEach(function (p) { if (name.toLowerCase().indexOf(p.toLowerCase()) < 0) name += " " + p; });
+      labels.forEach(function (p) {
+        var display = tidy(p);
+        if (tidy(name).toLowerCase().indexOf(display.toLowerCase()) < 0) name += " " + display;
+      });
     }
     if (mode !== "home" && metadataSpecial) {
       [type, transport].forEach(function (p) {
@@ -146,25 +229,26 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
       });
     }
     name = tidy(name).replace(/\btorrent\b|торрент/gi, "Торрент");
+    if (mode === "home" && country === "DE") name = name.replace(/Торрент(?:\s*🎬)?/g, "Торрент 🎬");
     if (/^(?:#?\d+|резерв)$/i.test(name) || new RegExp("^" + material + "$", "i").test(name)) name = "";
-    if (annotated && name && !/[()]/.test(name) && !/скорост|speed|fast|turbo|protocol|transport|протокол|транспорт/i.test(name) &&
-        !providerLightning && !hysteria && !metadataSpecial && !protocolSpecial) name = "(" + name + ")";
+    var ordinal = (name.match(/\s+(\d+)$/) || [])[1] || "";
+    if (ordinal) name = name.slice(0, -ordinal.length).trim();
     var level = hysteria ? 3 : providerLightning ? 2 : 1;
     var prefix = (flag ? flag + " " : "") + (mode === "home" ? "⚡".repeat(level) : mode === "mixed" ? "✅" : "🔑") +
-      " " + (street ? "Улица" : "Дом") + " [" + countryLabel(country) + "]";
+      " " + (street ? "Улица" : "Дом") + " " + countryLabel(country);
     return {server: server, index: index, level: level,
-      base: prefix + (name ? " " + name : ""),
-      end: mode !== "home" && (providerLightning || hysteria) ? " ⚡" : ""};
+      base: prefix + (name ? " " + name : "") +
+        (mode !== "home" && (providerLightning || hysteria) ? " ⚡" : "") + (ordinal ? " " + ordinal : "")};
   }
 
   var rows = servers.map(render).filter(function (row) { return row !== null; });
   if (mode === "home") rows.sort(function (a, b) { return b.level - a.level || a.index - b.index; });
   var reserved = Object.create(null), used = Object.create(null), counts = Object.create(null);
-  rows.forEach(function (row) { reserved[row.base + row.end] = true; });
+  rows.forEach(function (row) { reserved[row.base] = true; });
   return rows.map(function (row) {
-    var key = row.base + row.end, title = key, number = counts[key] || 1;
+    var key = row.base, title = key, number = counts[key] || 1;
     if (used[title]) {
-      do { number++; title = row.base + " " + number + row.end; } while (reserved[title] || used[title]);
+      do { number++; title = row.base + " " + number; } while (reserved[title] || used[title]);
     }
     counts[key] = number; used[title] = true;
     row.server.title = title;

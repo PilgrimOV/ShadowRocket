@@ -12,10 +12,10 @@ const title = x => ({title: x});
 add('priority and marker-aware collisions', home, [
   title('🇩🇪 Germany'), title('🇳🇱 ⚡ Netherlands'), title('🇩🇪 Hysteria version 9.1 | Germany'),
   title('🇩🇪 Германия'), title('🇳🇱 Нидерланды HYS4'), title('🇳🇱 ⚡ Нидерланды'),
-], ['🇩🇪 ⚡⚡⚡ Дом [Герм]', '🇳🇱 ⚡⚡⚡ Дом [Нидер]', '🇳🇱 ⚡⚡ Дом [Нидер]',
-    '🇳🇱 ⚡⚡ Дом [Нидер] 2', '🇩🇪 ⚡ Дом [Герм]', '🇩🇪 ⚡ Дом [Герм] 2'], [2,4,1,5,0,3]);
+], ['🇩🇪 ⚡⚡⚡ Дом Германия', '🇳🇱 ⚡⚡⚡ Дом Нидерланды', '🇳🇱 ⚡⚡ Дом Нидерланды',
+    '🇳🇱 ⚡⚡ Дом Нидерланды 2', '🇩🇪 ⚡ Дом Германия', '🇩🇪 ⚡ Дом Германия 2'], [2,4,1,5,0,3]);
 add('cities and Torrent survive', home, [title('🇺🇸 ⚡ United States — Washington'), title('🇩🇪 Германия Torrent')],
-  ['🇺🇸 ⚡⚡ Дом [США] Washington', '🇩🇪 ⚡ Дом [Герм] Торрент'], [0,1]);
+  ['🇺🇸 ⚡⚡ Дом Соединённые Штаты Америки Washington', '🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0,1]);
 add('Torrent/work notes do not override countries', [...home,...mixed], [
   title('🇨🇳 China | Torrent'), title('🇨🇳 China (для работы)'),
 ], [], []);
@@ -39,35 +39,35 @@ add('mixed Street cue and metadata markers', mixed, [
   title('🇩🇪 Germany ⚡ whitelist'), {title:'🇳🇱 Netherlands whitelist',type:'Hysteria2'},
   {title:'🇳🇱 Netherlands whitelist',type:'VLESS',obfs:'xhttp'},
   title('🇳🇱 Netherlands whitelist'), title('🇫🇷 France Paris'),
-], ['🇷🇺 ✅ Улица [Рос]', '🇯🇵 ✅ Улица [Япон]', '🇨🇳 ✅ Улица [Китай]',
-    '🇩🇪 ✅ Улица [Герм] ⚡', '🇳🇱 ✅ Улица [Нидер] ⚡',
-    '🇳🇱 ✅ Улица [Нидер]', '🇳🇱 ✅ Улица [Нидер] 2', '🇫🇷 ✅ Дом [Фран] Paris'], [0,1,2,3,4,5,6,7]);
+], ['🇷🇺 ✅ Улица Россия', '🇯🇵 ✅ Улица Япония', '🇨🇳 ✅ Улица Китай',
+    '🇩🇪 ✅ Улица Германия ⚡', '🇳🇱 ✅ Улица Нидерланды ⚡',
+    '🇳🇱 ✅ Улица Нидерланды', '🇳🇱 ✅ Улица Нидерланды 2', '🇫🇷 ✅ Дом Франция Paris'], [0,1,2,3,4,5,6,7]);
 add('negative whitelist is not Street', mixed, [
   title('🇷🇺 Russia no-whitelist'), title('🇧🇾 Belarus NONWHITELIST'), title('🇯🇵 Japan without whitelist'),
   title('🇷🇺 Russia no Street'), title('🇷🇺 Russia без улицы'),
 ], [], []);
 add('emoji presentation does not create invisible distinctions', home, [
   title('🇩🇪 ⚡️ Germany'), title('🇩🇪 ⚡ Germany'),
-], ['🇩🇪 ⚡⚡ Дом [Герм]', '🇩🇪 ⚡⚡ Дом [Герм] 2'], [0,1]);
+], ['🇩🇪 ⚡⚡ Дом Германия', '🇩🇪 ⚡⚡ Дом Германия 2'], [0,1]);
 add('emoji presentation does not create invisible distinctions', [...mixed,'street-reserve.js'], [
   title('🇩🇪 ⚡️ Germany'), title('🇩🇪 ⚡ Germany'),
 ], null, [0,1]);
 add('country code SS is not a protocol marker', home, [title('🇸🇸 SS')], [], []);
 const commonCountries = [
-  ['NL','Netherlands','Нидер'],['DE','Germany','Герм'],['FR','France','Фран'],['AT','Austria','Австр'],
-  ['FI','Finland','Финл'],['SE','Sweden','Швец'],['CH','Switzerland','Швейц'],['NO','Norway','Норв'],
-  ['HU','Hungary','Венгр'],['SK','Slovakia','Слова'],['SI','Slovenia','Слове'],['RO','Romania','Рум'],
-  ['PL','Poland','Поль'],['CZ','Czech Republic','Чех'],['DK','Denmark','Дан'],['EE','Estonia','Эстон'],
-  ['ES','Spain','Исп'],['IT','Italy','Итал'],['IE','Ireland','Ирл'],['LT','Lithuania','Литва'],
-  ['LV','Latvia','Латв'],['LU','Luxembourg','Люкс'],['MD','Moldova','Молд'],['RS','Serbia','Серб'],
-  ['TR','Turkey','Турц'],['US','United States','США'],['RU','Russia','Рос'],['BY','Belarus','Белар'],
-  ['JP','Japan','Япон'],['BE','Belgium','Белг'],['BG','Bulgaria','Болг'],['HR','Croatia','Хорв'],
-  ['KZ','Kazakhstan','Казах'],['CN','China','Китай'],['HK','Hong Kong','Гонк'],['TW','Taiwan','Тайв'],
+  ['NL','Netherlands','Нидерланды'],['DE','Germany','Германия'],['FR','France','Франция'],['AT','Austria','Австрия'],
+  ['FI','Finland','Финляндия'],['SE','Sweden','Швеция'],['CH','Switzerland','Швейцария'],['NO','Norway','Норвегия'],
+  ['HU','Hungary','Венгрия'],['SK','Slovakia','Словакия'],['SI','Slovenia','Словения'],['RO','Romania','Румыния'],
+  ['PL','Poland','Польша'],['CZ','Czech Republic','Чехия'],['DK','Denmark','Дания'],['EE','Estonia','Эстония'],
+  ['ES','Spain','Испания'],['IT','Italy','Италия'],['IE','Ireland','Ирландия'],['LT','Lithuania','Литва'],
+  ['LV','Latvia','Латвия'],['LU','Luxembourg','Люксембург'],['MD','Moldova','Молдова'],['RS','Serbia','Сербия'],
+  ['TR','Turkey','Турция'],['US','United States','Соединённые Штаты Америки'],['RU','Russia','Россия'],['BY','Belarus','Беларусь'],
+  ['JP','Japan','Япония'],['BE','Belgium','Бельгия'],['BG','Bulgaria','Болгария'],['HR','Croatia','Хорватия'],
+  ['KZ','Kazakhstan','Казахстан'],['CN','China','Китай'],['HK','Hong Kong','Гонконг'],['TW','Taiwan','Тайвань'],
 ];
 const flagOf = code => Array.from(code).map(c=>String.fromCodePoint(0x1F1E6+c.charCodeAt(0)-65)).join('');
 add('common country names normalize across engines', ['street-reserve.js'],
   commonCountries.map(([code,full])=>title(flagOf(code)+' '+full)),
-  commonCountries.map(([code,_,short])=>flagOf(code)+' 🔑 Улица ['+short+']'),
+  commonCountries.map(([code,_,short])=>flagOf(code)+' 🔑 Улица '+short),
   commonCountries.map((_,id)=>id));
 add('key aliases and protocol metadata', ['street-reserve.js'], [
   title('🇩🇪 ⚡ Обход [Gold] - Германия'),
@@ -75,12 +75,12 @@ add('key aliases and protocol metadata', ['street-reserve.js'], [
   {title:'🇩🇪 Обход [Lead] - Германия',obfs:'xhttp'},
   title('🇩🇪 Обход [Cobalt] - Германия'), title('🇷🇺 Обход [Silver] - Россия'),
   title('🇨🇳 Обход [Silver] - China'), title('🇯🇵 Japan'),
-], ['🇩🇪 🔑 Улица [Герм] ⚡', '🇩🇪 🔑 Улица [Герм] 2 ⚡',
-    '🇩🇪 🔑 Улица [Герм]', '🇩🇪 🔑 Улица [Герм] 2',
-    '🇷🇺 🔑 Улица [Рос]', '🇨🇳 🔑 Улица [Китай]', '🇯🇵 🔑 Улица [Япон]'], [0,1,2,3,4,5,6]);
+], ['🇩🇪 🔑 Улица Германия ⚡', '🇩🇪 🔑 Улица Германия ⚡ 2',
+    '🇩🇪 🔑 Улица Германия', '🇩🇪 🔑 Улица Германия 2',
+    '🇷🇺 🔑 Улица Россия', '🇨🇳 🔑 Улица Китай', '🇯🇵 🔑 Улица Япония'], [0,1,2,3,4,5,6]);
 for (const label of ['Hysteria','Hysteria2','Hysteria 3','HYSTERIA-v12','Hysteria version 4',
   'Hysteria 2.1','Hysteria (v3)','Hysteria [v7]','HY2','hy-3','HYS4','Хайстерия 2','Хистерия3','Гистерия 2']) {
-  add('Hysteria spelling ' + label, home, [title('🇨🇳 ' + label + ' | Китай')], ['🇨🇳 ⚡⚡⚡ Дом [Китай]'], [0]);
+  add('Hysteria spelling ' + label, home, [title('🇨🇳 ' + label + ' | Китай')], ['🇨🇳 ⚡⚡⚡ Дом Китай'], [0]);
   add('single trailing Hysteria marker ' + label, [...mixed, 'street-reserve.js'],
     [title('🇩🇪 ⚡ ' + label + ' | Германия')], null, [0]);
 }
@@ -90,16 +90,16 @@ const newProtocolInputs = [
 ];
 add('unknown annotations and protocols retained', home, newProtocolInputs, null, [5,0,1,2,3,4]);
 add('unknown annotations and protocols retained', mixed, newProtocolInputs, null, [0,1,2,3,4,5]);
-add('metadata permits hidden protocol label', mixed, [{title:'🇨🇳 China (XHTTP)',obfs:'xhttp'}], ['🇨🇳 ✅ Дом [Китай]'], [0]);
+add('metadata permits hidden protocol label', mixed, [{title:'🇨🇳 China (XHTTP)',obfs:'xhttp'}], ['🇨🇳 ✅ Дом Китай'], [0]);
 add('metadata protocol punctuation is escaped literally', mixed,
-  [{title:'🇨🇳 China (Future.Protocol+)',type:'Future.Protocol+'}], ['🇨🇳 ✅ Дом [Китай]'], [0]);
+  [{title:'🇨🇳 China (Future.Protocol+)',type:'Future.Protocol+'}], ['🇨🇳 ✅ Дом Китай'], [0]);
 add('metadata protocol punctuation is escaped literally', ['street-reserve.js'],
-  [{title:'🇨🇳 China (Future.Protocol+)',type:'Future.Protocol+'}], ['🇨🇳 🔑 Улица [Китай]'], [0]);
-add('ordinary displayed protocol omitted', mixed, [title('🇩🇪 Germany (XHTTP)')], ['🇩🇪 ✅ Дом [Герм]'], [0]);
+  [{title:'🇨🇳 China (Future.Protocol+)',type:'Future.Protocol+'}], ['🇨🇳 🔑 Улица Китай'], [0]);
+add('ordinary displayed protocol omitted', mixed, [title('🇩🇪 Germany (XHTTP)')], ['🇩🇪 ✅ Дом Германия'], [0]);
 add('title-only protocol fallback stays visible', mixed, [title('🇨🇳 China (XHTTP)')], null, [0]);
 add('formatted prefix is not provider lightning', home,
-  [title('🇨🇳 ⚡ Дом [Китай]'), title('🇨🇳 ⚡Дом [Китай]'), title('🇨🇳 ⚡⚡ Дом [Китай]')],
-  ['🇨🇳 ⚡⚡ Дом [Китай]'], [2]);
+  [title('🇨🇳 ⚡ Дом Китай'), title('🇨🇳 ⚡Дом Китай'), title('🇨🇳 ⚡⚡ Дом Китай')],
+  ['🇨🇳 ⚡⚡ Дом Китай'], [2]);
 for (const status of ['не работает','НЕ РАБОТАЕТ','не работают','техработы','тех-работы','тех. работы','технические работы',
   'maintenance','OFFLINE','not working','out of service','недоступен']) {
   add('outage ' + status, all, [title('🇩🇪 ⚡ Германия Hysteria (' + status + ')'), title('🇩🇪 Germany')], null, [1]);
@@ -111,9 +111,9 @@ for (const note of ['для работы','работает','техработы
 add('no country guessed from an alias', all, [title('NewNode (experimental)'), title(''), {}], null, [0,1,2]);
 add('NO in a status is not Norway', all, [title('No maintenance')], null, [0]);
 add('Norway keeps a negated status intact', ['street-reserve.js'], [title('🇳🇴 No maintenance')],
-  ['🇳🇴 🔑 Улица [Норв] No maintenance'], [0]);
+  ['🇳🇴 🔑 Улица Норвегия No maintenance'], [0]);
 add('unflagged protocol is not a country code', home, [{title:'SS NewNode',type:'SS'}],
-  ['⚡ Дом [?] NewNode SS'], [0]);
+  ['⚡ Дом ? NewNode SS'], [0]);
 add('partial fields do not become protocol names', all, [
   {title:'🇩🇪 Germany',type:2,obfs:3}, {title:'🇩🇪 Germany',type:'VLESS / UDP'},
 ], null, [0,1]);
@@ -125,8 +125,33 @@ add('new country remains visible', all, [title('🇻🇳 Vietnam'), title('🇷�
 add('useful unknown alias remains visible', all, [title('🇩🇪 Обход [FutureTransport9] - Германия')], null, [0]);
 add('city Gold Coast is not a metal alias', all, [title('🇩🇪 Germany Gold Coast')], null, [0]);
 add('legacy reserve index is replaced', ['street-reserve.js'], [title('🇩🇪 🔑 Улица [резерв] 7')],
-  ['🇩🇪 🔑 Улица [Герм]'], [0]);
+  ['🇩🇪 🔑 Улица Германия'], [0]);
 add('provider ordinal decoration is removed', all, [title('🇩🇪 Обход [Gold] - Германия ^~8~^')], null, [0]);
+
+add('mixed Extra is removed as a whole word', mixed, [
+  title('🇩🇪 Germany Extra'), title('🇩🇪 EXTRA Germany whitelist ⚡'), title('🇩🇪 Germany Extraordinary'),
+], ['🇩🇪 ✅ Дом Германия', '🇩🇪 ✅ Улица Германия ⚡', '🇩🇪 ✅ Дом Германия Extraordinary'], [0,1,2]);
+add('mixed Extra alone is not a country exception', mixed, [title('🇨🇳 China (Extra)')], [], []);
+add('collision ordinals follow trailing lightning', mixed, [
+  title('🇩🇪 ⚡ Germany'), title('🇩🇪 ⚡ Germany'), title('🇩🇪 ⚡ Germany'),
+], ['🇩🇪 ✅ Дом Германия ⚡', '🇩🇪 ✅ Дом Германия ⚡ 2', '🇩🇪 ✅ Дом Германия ⚡ 3'], [0,1,2]);
+add('collision ordinals follow trailing lightning', ['street-reserve.js'], [
+  title('🇩🇪 ⚡ Germany'), title('🇩🇪 ⚡ Germany'),
+], ['🇩🇪 🔑 Улица Германия ⚡', '🇩🇪 🔑 Улица Германия ⚡ 2'], [0,1]);
+add('legacy abbreviation migrates to full plain country', home, [
+  title('🇩🇪 ⚡⚡⚡ Дом [Герм]'), title('🇳🇱 ⚡⚡ Дом [Нидер]'),
+], ['🇩🇪 ⚡⚡⚡ Дом Германия', '🇳🇱 ⚡⚡ Дом Нидерланды'], [0,1]);
+add('brackets are removed from useful notes', all, [
+  title('🇩🇪 Germany (experimental) [speed] {fast}'),
+], null, [0]);
+add('long country aliases are consumed fully', ['street-reserve.js'], [
+  title('🇺🇸 United States of America'), title('🇦🇪 UAE'), title('🇿🇦 South Africa'),
+], ['🇺🇸 🔑 Улица Соединённые Штаты Америки', '🇦🇪 🔑 Улица Объединённые Арабские Эмираты',
+    '🇿🇦 🔑 Улица Южно-Африканская Республика'], [0,1,2]);
+
+add('German Home Torrent movie marker is not repeated', home, [title('🇩🇪 ⚡ Дом [Герм] Торрент 🎬')], ['🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0]);
+add('metadata version brackets do not duplicate a label', home,
+  [{title:'🇨🇳 China',type:'Future(2)'}], ['🇨🇳 ⚡ Дом Китай FUTURE 2'], [0]);
 
 // Recreate the native wrapping boundary, including its later function declaration.
 function wrap(source) {
@@ -154,11 +179,11 @@ function validate(file, c, result, run) {
   for (const server of result) {
     const {title:_,...actual}=server, {title:__,...original}=c.input.find(x=>x.id===server.id);
     assert.deepEqual(actual,original,label+' only title changes');
-    assert(server.title.match(/\[([^\]]{1,5})\]/u),label+' country <=5');
+    assert(!/[\[\](){}]/.test(server.title),label+' bracket-free display');
     assert(!/\bhysteria\b|хайстерия|\bhy[0-9]/i.test(server.title),label+' Hysteria word removed');
     if (!file.startsWith('home')) {
       assert(!/⚡⚡/.test(server.title),label+' one trailing lightning');
-      if (/⚡/.test(server.title)) assert(server.title.endsWith(' ⚡'),label+' marker last');
+      if (/⚡/.test(server.title)) assert(/ ⚡(?: \d+)*$/.test(server.title),label+' ordinal follows marker');
     }
   }
   if (c.repeat) assert.deepEqual(run(result),result,label+' repeat processing');
