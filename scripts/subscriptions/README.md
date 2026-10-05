@@ -15,11 +15,11 @@ files, Node.js, external service, credentials, or subscription URL.
 ## Naming and filtering
 
 Names use `flag marker Дом/Улица country city/note marker ordinal`.
-Country names are full Russian names, without abbreviations or brackets.
+Country names are Russian and bracket-free; full names are used except `США`.
 The shared vocabulary in `naming.js` uses, for example, `Нидерланды`,
-`Германия`, and `Соединённые Штаты Америки`. A flag takes precedence over
+`Германия`, and `США`. A flag takes precedence over
 country spelling; recognized names are a fallback when the flag is missing.
-Legacy abbreviations are recognized on input but never rendered. Unknown
+Other legacy abbreviations are recognized on input but never rendered. Unknown
 countries stay visible. For an unlisted flag, `Intl.DisplayNames` supplies
 the full Russian name; without that API the country code remains visible.
 City spelling is preserved. Known material aliases and provider decoration
@@ -29,7 +29,8 @@ German Home Torrent nodes display `Торрент 🎬`.
 
 Home views use one leading lightning normally, two for a provider lightning,
 and three for Hysteria. Hysteria names and versions disappear. The returned
-Home list is ordered `⚡⚡⚡`, `⚡⚡`, `⚡`, preserving provider order for ties.
+Home list is ordered `⚡⚡⚡`, `⚡⚡`, `⚡`. Within the three-lightning bucket,
+Netherlands comes first; all other ties preserve provider order.
 Mixed/key views have exactly one lightning after the notes for a provider lightning
 or Hysteria, including when both occur. Other protocol names are omitted
 there when redundant. For a Home node in an excluded country, a title-only
@@ -63,7 +64,7 @@ permanent node identities. No field other than a retained node's title changes.
 
 ## Group and scene filters
 
-All views now omit brackets and use full country names. Migrate filters
+All views omit brackets and use full country names except `США`. Migrate filters
 that depended on `[резерв]`, `[Нидер]`, or other abbreviated bracketed names
 when installing. Configs/groups/scenes are not changed by a source commit.
 

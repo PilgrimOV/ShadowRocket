@@ -12,10 +12,10 @@ const title = x => ({title: x});
 add('priority and marker-aware collisions', home, [
   title('🇩🇪 Germany'), title('🇳🇱 ⚡ Netherlands'), title('🇩🇪 Hysteria version 9.1 | Germany'),
   title('🇩🇪 Германия'), title('🇳🇱 Нидерланды HYS4'), title('🇳🇱 ⚡ Нидерланды'),
-], ['🇩🇪 ⚡⚡⚡ Дом Германия', '🇳🇱 ⚡⚡⚡ Дом Нидерланды', '🇳🇱 ⚡⚡ Дом Нидерланды',
-    '🇳🇱 ⚡⚡ Дом Нидерланды 2', '🇩🇪 ⚡ Дом Германия', '🇩🇪 ⚡ Дом Германия 2'], [2,4,1,5,0,3]);
+], ['🇳🇱 ⚡⚡⚡ Дом Нидерланды', '🇩🇪 ⚡⚡⚡ Дом Германия', '🇳🇱 ⚡⚡ Дом Нидерланды',
+    '🇳🇱 ⚡⚡ Дом Нидерланды 2', '🇩🇪 ⚡ Дом Германия', '🇩🇪 ⚡ Дом Германия 2'], [4,2,1,5,0,3]);
 add('cities and Torrent survive', home, [title('🇺🇸 ⚡ United States — Washington'), title('🇩🇪 Германия Torrent')],
-  ['🇺🇸 ⚡⚡ Дом Соединённые Штаты Америки Washington', '🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0,1]);
+  ['🇺🇸 ⚡⚡ Дом США Washington', '🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0,1]);
 add('Torrent/work notes do not override countries', [...home,...mixed], [
   title('🇨🇳 China | Torrent'), title('🇨🇳 China (для работы)'),
 ], [], []);
@@ -60,7 +60,7 @@ const commonCountries = [
   ['PL','Poland','Польша'],['CZ','Czech Republic','Чехия'],['DK','Denmark','Дания'],['EE','Estonia','Эстония'],
   ['ES','Spain','Испания'],['IT','Italy','Италия'],['IE','Ireland','Ирландия'],['LT','Lithuania','Литва'],
   ['LV','Latvia','Латвия'],['LU','Luxembourg','Люксембург'],['MD','Moldova','Молдова'],['RS','Serbia','Сербия'],
-  ['TR','Turkey','Турция'],['US','United States','Соединённые Штаты Америки'],['RU','Russia','Россия'],['BY','Belarus','Беларусь'],
+  ['TR','Turkey','Турция'],['US','United States','США'],['RU','Russia','Россия'],['BY','Belarus','Беларусь'],
   ['JP','Japan','Япония'],['BE','Belgium','Бельгия'],['BG','Bulgaria','Болгария'],['HR','Croatia','Хорватия'],
   ['KZ','Kazakhstan','Казахстан'],['CN','China','Китай'],['HK','Hong Kong','Гонконг'],['TW','Taiwan','Тайвань'],
 ];
@@ -146,12 +146,22 @@ add('brackets are removed from useful notes', all, [
 ], null, [0]);
 add('long country aliases are consumed fully', ['street-reserve.js'], [
   title('🇺🇸 United States of America'), title('🇦🇪 UAE'), title('🇿🇦 South Africa'),
-], ['🇺🇸 🔑 Улица Соединённые Штаты Америки', '🇦🇪 🔑 Улица Объединённые Арабские Эмираты',
+], ['🇺🇸 🔑 Улица США', '🇦🇪 🔑 Улица Объединённые Арабские Эмираты',
     '🇿🇦 🔑 Улица Южно-Африканская Республика'], [0,1,2]);
 
 add('German Home Torrent movie marker is not repeated', home, [title('🇩🇪 ⚡ Дом [Герм] Торрент 🎬')], ['🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0]);
 add('metadata version brackets do not duplicate a label', home,
   [{title:'🇨🇳 China',type:'Future(2)'}], ['🇨🇳 ⚡ Дом Китай FUTURE 2'], [0]);
+
+add('Netherlands priority applies only to Hysteria in Home', home, [
+  title('🇩🇪 Germany'), title('🇳🇱 Netherlands'), title('🇩🇪 ⚡ Germany'),
+  title('🇳🇱 ⚡ Netherlands'), title('🇳🇱 Hysteria Netherlands'), title('🇩🇪 Hysteria Germany'),
+], ['🇳🇱 ⚡⚡⚡ Дом Нидерланды', '🇩🇪 ⚡⚡⚡ Дом Германия',
+    '🇩🇪 ⚡⚡ Дом Германия', '🇳🇱 ⚡⚡ Дом Нидерланды',
+    '🇩🇪 ⚡ Дом Германия', '🇳🇱 ⚡ Дом Нидерланды'], [4,5,2,3,0,1]);
+add('previous full US label is normalized', ['home-us-turkey.js'],
+  [title('🇺🇸 ⚡ Дом Соединённые Штаты Америки Лос-Анджелес')],
+  ['🇺🇸 ⚡ Дом США Лос-Анджелес'], [0]);
 
 // Recreate the native wrapping boundary, including its later function declaration.
 function wrap(source) {

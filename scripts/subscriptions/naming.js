@@ -26,7 +26,7 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     MD:["Молдова", "Молд"],
     RS:["Сербия", "Серб"],
     TR:["Турция", "Турц"],
-    US:["Соединённые Штаты Америки", "США"],
+    US:["США", "Соединённые Штаты Америки"],
     RU:["Россия", "Рос"],
     BY:["Беларусь", "Белар"],
     JP:["Япония", "Япон"],
@@ -229,13 +229,15 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     var level = hysteria ? 3 : providerLightning ? 2 : 1;
     var prefix = (flag ? flag + " " : "") + (mode === "home" ? "⚡".repeat(level) : mode === "mixed" ? "✅" : "🔑") +
       " " + (street ? "Улица" : "Дом") + " " + countryLabel(country);
-    return {server: server, index: index, level: level,
+    return {server: server, index: index, level: level, preferred: level === 3 && country === "NL",
       base: prefix + (name ? " " + name : "") +
         (mode !== "home" && (providerLightning || hysteria) ? " ⚡" : "") + (ordinal ? " " + ordinal : "")};
   }
 
   var rows = servers.map(render).filter(function (row) { return row !== null; });
-  if (mode === "home") rows.sort(function (a, b) { return b.level - a.level || a.index - b.index; });
+  if (mode === "home") rows.sort(function (a, b) {
+    return b.level - a.level || b.preferred - a.preferred || a.index - b.index;
+  });
   var reserved = Object.create(null), used = Object.create(null), counts = Object.create(null);
   rows.forEach(function (row) { reserved[row.base] = true; });
   return rows.map(function (row) {
