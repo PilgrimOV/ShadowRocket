@@ -17,11 +17,11 @@ the stricter UTF-16 length (supplementary characters count twice):
 
 | File | Characters (Unicode code points) | UTF-16 units |
 | --- | ---: | ---: |
-| home.js | 3,672 | 3,674 |
-| home-us-turkey.js | 3,671 | 3,673 |
-| mixed.js | 3,673 | 3,675 |
-| mixed-us-turkey.js | 3,672 | 3,674 |
-| street-reserve.js | 3,674 | 3,676 |
+| home.js | 3,450 | 3,452 |
+| home-us-turkey.js | 3,447 | 3,449 |
+| mixed.js | 3,518 | 3,519 |
+| mixed-us-turkey.js | 3,514 | 3,515 |
+| street-reserve.js | 2,777 | 2,778 |
 
 Copy the **entire file as plain text**, including its CJK characters; paste the
 whole received message into Script. Those characters carry losslessly packed
@@ -106,13 +106,22 @@ exclude Home Netherlands with `^(?!.*Дом\s+Нидерланды).*$` instead.
 
 Keep `naming.js` readable; edit it and the five view settings in `build.cjs`.
 The pinned [Terser](https://github.com/terser/terser#api-reference) build dependency
-removes formatting/comments and shortens local identifiers (`compress: false`);
-it does not rewrite logic or rename fields. `build.cjs` then losslessly packs
-that code with LZW and stores variable-width codes as printable 14-bit CJK
+substitutes each view's settings at build time and runs three standard compression
+passes, without unsafe transforms or field renaming. Each generated function
+accepts only the server list and contains its own rules: Home has no Street role
+classifier; Street has no Home exclusions, exception heuristics, city table,
+protocol-label collection, or Home sort; mixed retains both roles. It recognizes
+only its own rendered prefix for repeat processing. Country patterns are created
+on demand rather than preparing every country's regex before processing a list.
+`build.cjs` then losslessly packs that specialized code with LZW and stores
+variable-width codes as printable 14-bit CJK
 characters. A small embedded decoder restores the exact code before evaluating
 the static filter function. Provider data is never evaluated as code. The build
 verifies exact unpacking and rejects output over 3,900 UTF-16 units. Only the
 five pasteable outputs are packed; keep edits in the readable source.
+The payload uses string concatenation with actual newlines every 96 characters.
+A single long CJK paragraph stalled UIKit's word tokenizer during UI insertion
+on this Mac; short paragraphs limit the editor's text-processing input.
 Install the build dependency in this directory, then regenerate:
 
 ```sh
@@ -124,7 +133,8 @@ node scripts/subscriptions/test.cjs --native
 ```
 
 `--native` requires macOS and the installed Shadowrocket executable. It
-extracts the actual filter wrapper and runs synthetic cases in JavaScriptCore;
+extracts the actual filter wrapper and runs synthetic cases in JavaScriptCore,
+including the raw-text script-selection check and an Objective-C array bridge;
 `SHADOWROCKET_EXECUTABLE` can select another installed binary. The ordinary
 check uses an equivalent wrapper in Node's VM. Both check retention, ordering,
 markers, country normalization, unique names, unchanged connection fields,
@@ -132,7 +142,9 @@ and repeated processing. Both engines also compare compact output with the
 readable source for every fixture. No private subscription data is read by
 these checks. The ordinary check also verifies message size, UTF-8 copying,
 and NFC normalization stability. On 2026-10-05 the packed outputs passed all
-312 scenarios in both engines. JavaScriptCore verification on this Mac does
+313 scenarios in both engines, including the 13 Street titles supplied in the
+user's raw subscription screenshot. The specialized outputs also matched the
+previous committed renderer on all 313 scenarios in Node. JavaScriptCore verification on this Mac does
 not constitute a live test on an iPhone or every other supported device; the
 existing native wrapper and runtime requirements still apply.
 
@@ -148,6 +160,15 @@ changes. An app's explicit ping/manual UI sort can override returned order.
 These checks exercise the engine and installed wrapper outside the app.
 They do not install filters or prove live connectivity, speed, or behavior
 on an untested device/version.
+
+The installed app's `filterSubscribe:` first checks whether the raw Filter
+text contains the literal `$server`. Without it, even valid JavaScript is
+interpreted as a name/regex filter. The previous packed outputs lost this
+marker through identifier mangling and could leave only a few unchanged nodes.
+The build now uses the unused `$server_tail` function to retain the required
+substring and close the native wrapper; both engine checks reject fragments
+without it. Keep this
+dispatch check when changing the packer or validating a newer app version.
 
 ## Install and rollback
 

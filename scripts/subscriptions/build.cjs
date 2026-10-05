@@ -8,12 +8,11 @@ const views = {
   'mixed-us-turkey.js': ['mixed', true],
   'street-reserve.js': ['street', false],
 };
-// Only local identifiers and formatting change; retain all logic and field names.
-const compact = minify_sync(fs.readFileSync(path.join(__dirname, 'naming.js'), 'utf8'), {
-  compress: false,
-  mangle: true,
-  format: {comments: false, ascii_only: false},
-}).code;
+const source = fs.readFileSync(path.join(__dirname, 'naming.js'), 'utf8');
+// Remove the view parameters so Terser can resolve their constants in closures.
+const signature = 'function subscriptionNames(servers, mode, allowUsTurkey)';
+if (!source.includes(signature)) throw Error('Shared source signature changed');
+const specializedSource = source.replace(signature, 'function subscriptionNames(servers)');
 
 // LZW over UTF-16 units. Store variable-width codes as 14-bit CJK characters:
 // every payload character is printable, one UTF-16 unit, and stable under NFC.
@@ -68,16 +67,30 @@ function unpack(alphabet, payload, count) {
   }
   return source;
 }
-const packed = pack(compact);
-if (unpack(packed.alphabet, packed.payload, packed.count) !== compact) throw Error('Packing changed source');
-
 function output(mode, extra) {
-  const script = '$js_filter_servers=(function(){var filter=eval("("+(' + unpack.toString() + ')(' +
+  // Each output contains only its own rules, not the other views' branches.
+  const compact = minify_sync(specializedSource, {
+    compress: {passes: 3, global_defs: {mode, allowUsTurkey: extra}},
+    mangle: true,
+    format: {comments: false, ascii_only: false},
+  }).code;
+  const packed = pack(compact);
+  if (unpack(packed.alphabet, packed.payload, packed.count) !== compact) throw Error('Packing changed source');
+  const script = '$js_filter_servers=eval("("+(' + unpack.toString() + ')(' +
     JSON.stringify(packed.alphabet) + ',' + JSON.stringify(packed.payload) + ',' + packed.count +
-    ')+")");return function(servers){return filter(servers,' + JSON.stringify(mode) + ',' + extra + ')}})();';
-  const result = 'return true;}' + minify_sync(script, {
-    compress: false, mangle: true, format: {comments: false, ascii_only: false},
-  }).code + 'function $subscription_tail(){';
+    ')+")");';
+  const code = minify_sync(script, {
+    compress: {passes: 3}, mangle: true, format: {comments: false, ascii_only: false},
+  }).code;
+  const literal = JSON.stringify(packed.payload);
+  if (!code.includes(literal)) throw Error('Packed literal missing from output');
+  // UIKit's word tokenizer can stall on a paragraph of random CJK characters.
+  // Keep actual text paragraphs short; concatenation restores the same payload.
+  const lines = packed.payload.match(/.{1,96}/g).map(part => JSON.stringify(part)).join('+\n');
+  // The app selects JavaScript only when raw Filter text contains $server.
+  // The unused tail both closes the native wrapper and carries that marker.
+  const result = 'return true;}' + code.replace(literal, '(' + lines + ')') + 'function $server_tail(){';
+  if (!result.includes('$server')) throw Error('Filter would not execute as JavaScript in the app');
   // UTF-16 length is conservative: even supplementary characters count twice.
   if (result.length > 3900) throw Error('Filter exceeds 3900 UTF-16 units: ' + mode);
   return result;

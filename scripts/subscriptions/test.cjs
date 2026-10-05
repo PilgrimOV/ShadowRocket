@@ -78,6 +78,22 @@ add('key aliases and protocol metadata', ['street-reserve.js'], [
 ], ['🇩🇪 🔑 Улица Германия ⚡', '🇩🇪 🔑 Улица Германия ⚡ 2',
     '🇩🇪 🔑 Улица Германия', '🇩🇪 🔑 Улица Германия 2',
     '🇷🇺 🔑 Улица Россия', '🇨🇳 🔑 Улица Китай', '🇯🇵 🔑 Улица Япония'], [0,1,2,3,4,5,6]);
+add('current Street provider titles from the supplied screenshot', ['street-reserve.js'], [
+  title('🇵🇱 ⚡ Обход [Gold] - Польша'), title('🇩🇪 ⚡ Обход [Gold] - Германия'),
+  title('🇩🇪 Обход [Platinum] - Германия'), title('🇩🇪 Обход [Magnetit] - Германия'),
+  title('🇳🇱 Обход [Silver] - Нидерланды'),
+  {title:'🇳🇱 Обход [Cooper] - Нидерланды',type:'Hysteria2'},
+  {title:'🇳🇱 Обход [Lead] - Нидерланды',obfs:'xhttp'},
+  title('🇷🇺 Обход [Silver] - Россия'), {title:'🇷🇺 Обход [Cooper] - Россия',type:'Hysteria2'},
+  title('🇳🇱 ⚡ Обход [Obsidian] - Нидерланды ^~2~^'),
+  title('🇩🇪 Обход [Bronze] - Германия'), title('🇳🇱 Обход [Bronze] - Нидерланды'),
+  {title:'🇳🇱 Обход [Cobalt] - Нидерланды',obfs:'xhttp'},
+], ['🇵🇱 🔑 Улица Польша ⚡', '🇩🇪 🔑 Улица Германия ⚡',
+    '🇩🇪 🔑 Улица Германия', '🇩🇪 🔑 Улица Германия 2', '🇳🇱 🔑 Улица Нидерланды',
+    '🇳🇱 🔑 Улица Нидерланды ⚡', '🇳🇱 🔑 Улица Нидерланды 2',
+    '🇷🇺 🔑 Улица Россия', '🇷🇺 🔑 Улица Россия ⚡', '🇳🇱 🔑 Улица Нидерланды ⚡ 2',
+    '🇩🇪 🔑 Улица Германия 3', '🇳🇱 🔑 Улица Нидерланды 3', '🇳🇱 🔑 Улица Нидерланды 4'],
+  Array.from({length:13}, (_,i)=>i));
 for (const label of ['Hysteria','Hysteria2','Hysteria 3','HYSTERIA-v12','Hysteria version 4',
   'Hysteria 2.1','Hysteria (v3)','Hysteria [v7]','HY2','hy-3','HYS4','Хайстерия 2','Хистерия3','Гистерия 2']) {
   add('Hysteria spelling ' + label, home, [title('🇨🇳 ' + label + ' | Китай')], ['🇨🇳 ⚡⚡⚡ Дом Китай'], [0]);
@@ -164,6 +180,9 @@ add('current Russian countries normalize without a flag', ['street-reserve.js'],
 
 // Recreate the native wrapping boundary, including its later function declaration.
 function wrap(source) {
+  // filterSubscribe: checks this literal before constructing the JS wrapper.
+  // Without it the app treats even valid JavaScript as a name/regex filter.
+  assert(source.includes('$server'), 'UI dispatch: missing literal $server; text would not execute as JavaScript');
   return 'function $js_filter_server($server,$index,$context){\n' + source +
     '\n; return true; }\nfunction $js_filter_servers($servers){var result=[],context={};' +
     'for(var i=0;i<$servers.length;i++){var $server=$servers[i];' +
@@ -177,6 +196,7 @@ for (const [file, [mode, extra]] of Object.entries(views)) {
   assert(source.length <= 3900, file + ': conservative message length');
   assert.equal(Buffer.from(source,'utf8').toString('utf8'),source,file + ': UTF-8 copy round trip');
   assert.equal(source.normalize('NFC'),source,file + ': Unicode normalization stability');
+  assert(!/[\u4e00-\u8dff]{97}/.test(source),file + ': bounded CJK paragraphs for the UI editor');
   const context = vm.createContext({});
   assert.equal(vm.runInContext(wrap(output(mode,extra)),context), true);
   const cases = fixtures.filter(x => x.files.includes(file));
@@ -217,8 +237,29 @@ if (process.argv.includes('--native')) {
   assert(i>=0,'installed wrapper not found; recheck the integration boundary');
   const template=lines.slice(i,i+2).join('\n');
   assert(template.includes('function $js_filter_servers($servers)') && template.split('%@').length===2,'installed wrapper changed');
-  const inputs=suites.map(s=>({file:s.file,mode:s.mode,extra:s.extra,source:template.replace('%@',()=>s.source),referenceSource:readableSource,cases:s.cases}));
-  const script="ObjC.import('JavaScriptCore');\nvar suites="+JSON.stringify(inputs)+";\nvar outputs=suites.map(function(s){var c=$.JSContext.alloc.init;c.evaluateScript(s.source);var reference=$.JSContext.alloc.init;reference.evaluateScript(s.referenceSource);return {file:s.file,results:s.cases.map(function(t){var expr='JSON.stringify($js_filter_servers('+JSON.stringify(t.input)+'))';var first=JSON.parse(ObjC.unwrap(c.evaluateScript(expr).toObject));var second=JSON.parse(ObjC.unwrap(c.evaluateScript('JSON.stringify($js_filter_servers('+JSON.stringify(first)+'))').toObject));var referenceResult=JSON.parse(ObjC.unwrap(reference.evaluateScript('JSON.stringify(subscriptionNames('+JSON.stringify(t.input)+','+JSON.stringify(s.mode)+','+s.extra+'))').toObject));return {first:first,second:second,reference:referenceResult};})};});\nJSON.stringify(outputs);\n";
+  const inputs=suites.map(s=>({file:s.file,mode:s.mode,extra:s.extra,fragment:s.source,source:template.replace('%@',()=>s.source),referenceSource:readableSource,cases:s.cases}));
+  const script=`ObjC.import('Foundation');ObjC.import('JavaScriptCore');
+var suites=${JSON.stringify(inputs)};
+function callFilter(context, input) {
+  var data=$(JSON.stringify(input)).dataUsingEncoding($.NSUTF8StringEncoding);
+  var nativeInput=$.NSJSONSerialization.JSONObjectWithDataOptionsError(data,0,null);
+  var fn=context.objectForKeyedSubscript('$js_filter_servers');
+  var value=fn.callWithArguments($.NSArray.arrayWithObject(nativeInput));
+  if (!value.isArray) throw Error('Native callback did not return an array');
+  return ObjC.deepUnwrap(value.toArray);
+}
+var outputs=suites.map(function(s){
+  if (!$(s.fragment).containsString('$server')) throw Error('Native UI dispatch rejected JavaScript');
+  var c=$.JSContext.alloc.init,loaded=c.evaluateScript(s.source);
+  if (!loaded.isBoolean || !loaded.toBool) throw Error('Native wrapper evaluation failed');
+  var reference=$.JSContext.alloc.init;reference.evaluateScript(s.referenceSource);
+  return {file:s.file,results:s.cases.map(function(t){
+    var first=callFilter(c,t.input),second=callFilter(c,first);
+    var referenceResult=JSON.parse(ObjC.unwrap(reference.evaluateScript('JSON.stringify(subscriptionNames('+JSON.stringify(t.input)+','+JSON.stringify(s.mode)+','+s.extra+'))').toObject));
+    return {first:first,second:second,reference:referenceResult};
+  })};
+});
+JSON.stringify(outputs);`;
   const folder=fs.mkdtempSync(path.join(os.tmpdir(),'shadowrocket-native-test-'));
   try {
     const target=path.join(folder,'probe.js');fs.writeFileSync(target,script);
@@ -230,7 +271,7 @@ if (process.argv.includes('--native')) {
         validate(suite.file,cases[i],r.first,()=>r.second);
       });
     }
-    console.log('PASS: all five filters in JavaScriptCore using the installed native wrapper');
+    console.log('PASS: all five filters using native dispatch, wrapper, and Objective-C callback bridge');
   } finally { fs.rmSync(folder,{recursive:true,force:true}); }
 }
 console.log('PASS: '+suites.reduce((sum,s)=>sum+s.cases.length,0)+' behavioral scenarios; no private data');

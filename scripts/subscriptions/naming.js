@@ -113,9 +113,8 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     return countries[code] = {label:label.replace(/[\[\](){}]/g, ""), pattern:new RegExp("(^|[^" + letters + "])(?:" +
       names.map(escape).join("|") + ")(?=$|[^" + letters + "])", "gi")};
   }
-  codes.forEach(countryInfo);
-  var blocked = ("NG CA GB UA IL AU SG BR MX PT MY JP KR ZA HK AR CO IN AE PE GR KG BH KZ SA TH QA CR EC ID PK IQ IS CL GE UZ MK HR CY KH BD TW PH AL BA AZ BY CN AQ TJ EG MN BN LK SS LI" +
-    (allowUsTurkey ? "" : " US TR")).split(" ");
+  var blocked = mode !== "street" ? ("NG CA GB UA IL AU SG BR MX PT MY JP KR ZA HK AR CO IN AE PE GR KG BH KZ SA TH QA CR EC ID PK IQ IS CL GE UZ MK HR CY KH BD TW PH AL BA AZ BY CN AQ TJ EG MN BN LK SS LI" +
+    (allowUsTurkey ? "" : " US TR")).split(" ") : [];
   var flags = /[\u{1F1E6}-\u{1F1FF}]{2}/u;
   var hySource = "(?:\\bhysteria|хайстерия|хистерия|гистерия)(?:[\\s_:/-]*(?:(?:v(?:ersion|er)?)[\\s_-]*)?\\d+(?:\\.\\d+)*|\\s*[\\[(]\\s*v?\\d+(?:\\.\\d+)*\\s*[\\])])?|\\bhy(?:s)?(?:[\\s_-]*\\d+(?:\\.\\d+)*)?\\b";
   var protocols = /\b(?:vless|vmess|trojan|shadowsocks|ss|tuic|wireguard|socks[45]?|naive|xhttp|grpc|quic|reality|xtls)(?:[\s_-]*v?\d+(?:\.\d+)*)?\b/gi;
@@ -147,8 +146,9 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     s = s.replace(protocols, "");
     if (/^[A-Z]{2}$/.test(s.trim()) && vocabulary[s.trim()]) return s.trim();
     for (var i = 0; i < codes.length; i++) {
-      countries[codes[i]].pattern.lastIndex = 0;
-      if (countries[codes[i]].pattern.test(s)) return codes[i];
+      var pattern = countryInfo(codes[i]).pattern;
+      pattern.lastIndex = 0;
+      if (pattern.test(s)) return codes[i];
     }
     return "";
   }
@@ -160,17 +160,20 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     var original = String(server.title || "").replace(/[\uFE0E\uFE0F\u200B]/g, ""), flag = (original.match(flags) || [""])[0];
     if (unavailable(original)) return null;
     var name = original.replace(flags, "").trim();
-    var formatted = name.match(/^(⚡{1,3}|✅|🔑)\s*(Дом|Улица)\s+(.+)$/u);
+    var formatted = name.match(mode === "home" ? /^(⚡{1,3})\s*(Дом)\s+(.+)$/u :
+      mode === "mixed" ? /^(✅)\s*(Дом|Улица)\s+(.+)$/u : /^(🔑)\s*(Улица)\s+(.+)$/u);
     var providerLightning = /⚡/.test(name), renderedLevel = 0;
     if (formatted) {
-      renderedLevel = /^⚡/.test(formatted[1]) ? formatted[1].length : 0;
-      providerLightning = renderedLevel ? renderedLevel === 2 : /⚡/.test(formatted[3]);
+      if (mode === "home") renderedLevel = formatted[1].length;
+      providerLightning = mode === "home" ? renderedLevel === 2 : /⚡/.test(formatted[3]);
       name = formatted[3];
     }
-    var roleTitle = original.replace(/(?:\b(?:no|non|not|without)[\s_-]*|без\s*)(?:whitelist|street|улиц[аы])/gi, "");
-    var street = mode === "street" || (mode === "mixed" &&
-      ((formatted && formatted[2] === "Улица") || /whitelist/i.test(roleTitle) ||
-       /(?:^|[^A-Za-zА-Яа-яЁё])(?:Улица|Street)(?=$|[^A-Za-zА-Яа-яЁё])/i.test(roleTitle)));
+    var street = mode === "street";
+    if (mode === "mixed") {
+      var roleTitle = original.replace(/(?:\b(?:no|non|not|without)[\s_-]*|без\s*)(?:whitelist|street|улиц[аы])/gi, "");
+      street = (formatted && formatted[2] === "Улица") || /whitelist/i.test(roleTitle) ||
+        /(?:^|[^A-Za-zА-Яа-яЁё])(?:Улица|Street)(?=$|[^A-Za-zА-Яа-яЁё])/i.test(roleTitle);
+    }
     var country = countryOf(flag, name);
     countryInfo(country);
     if (formatted && !country) name = name.replace(/^\?\s*/, "");
@@ -178,28 +181,35 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     var type = text(server.type), transport = text(server.obfs) || text(server.transport);
     var hysteria = renderedLevel === 3 || new RegExp(hySource, "i").test(name + " " + type);
     var metadataSpecial = !!((type && !ordinary.test(type)) || (transport && !ordinary.test(transport)));
-    var explicitProtocols = stripCountry(name, country).match(protocols) || [];
-    var protocolSpecial = explicitProtocols.some(function (p) { return !/^(vless|reality|xtls)$/i.test(p); });
+    var explicitProtocols = [], protocolSpecial = false;
+    if (!street) {
+      explicitProtocols = stripCountry(name, country).match(protocols) || [];
+      protocolSpecial = explicitProtocols.some(function (p) { return !/^(vless|reality|xtls)$/i.test(p); });
+    }
     name = name.replace(aliases, "").replace(/\^~\d+~\^/g, "")
       .replace(new RegExp(hySource, "gi"), "")
       .replace(/\bADS\b/gi, "").replace(/whitelist/gi, "")
       .replace(/(?:^|[^A-Za-zА-Яа-яЁё])(?:Обход|Дом|Улица|Home|Street)(?=$|[^A-Za-zА-Яа-яЁё])/gi, " ");
     name = stripCountry(name, country);
     if (mode === "mixed") name = name.replace(/\bExtra\b/gi, "");
-    var annotationEvidence = name.replace(protocols, "").replace(cities, "").replace(/\btorrent\b|торрент|для\s+работы/gi, "");
-    var annotated = /[|[(][^|[\]()]*[A-Za-zА-Яа-яЁё][^|[\]()]*[|\])]?/.test(annotationEvidence) ||
-      /скорост|speed|fast|turbo|protocol|transport|протокол|транспорт/i.test(annotationEvidence) ||
-      !!(formatted && new RegExp("[" + letters + "]").test(annotationEvidence));
-    var special = providerLightning || hysteria || metadataSpecial || protocolSpecial || annotated;
-    if (!street && !special && blocked.indexOf(country) >= 0) return null;
+    if (!street) {
+      var annotationEvidence = name.replace(protocols, "").replace(cities, "").replace(/\btorrent\b|торрент|для\s+работы/gi, "");
+      var annotated = /[|[(][^|[\]()]*[A-Za-zА-Яа-яЁё][^|[\]()]*[|\])]?/.test(annotationEvidence) ||
+        /скорост|speed|fast|turbo|protocol|transport|протокол|транспорт/i.test(annotationEvidence) ||
+        !!(formatted && new RegExp("[" + letters + "]").test(annotationEvidence));
+      var special = providerLightning || hysteria || metadataSpecial || protocolSpecial || annotated;
+      if (!special && blocked.indexOf(country) >= 0) return null;
+    }
 
     var labels = [];
-    explicitProtocols.forEach(function (p) {
-      if (!/^(vless|reality|xtls)$/i.test(p) && labels.indexOf(p.toUpperCase()) < 0) labels.push(p.toUpperCase());
-    });
-    [type, transport].forEach(function (p) {
-      if (p && !ordinary.test(p) && !new RegExp(hySource, "i").test(p) && labels.indexOf(p.toUpperCase()) < 0) labels.push(p.toUpperCase());
-    });
+    if (mode === "home" || (!street && blocked.indexOf(country) >= 0 && protocolSpecial && !metadataSpecial)) {
+      explicitProtocols.forEach(function (p) {
+        if (!/^(vless|reality|xtls)$/i.test(p) && labels.indexOf(p.toUpperCase()) < 0) labels.push(p.toUpperCase());
+      });
+      [type, transport].forEach(function (p) {
+        if (p && !ordinary.test(p) && !new RegExp(hySource, "i").test(p) && labels.indexOf(p.toUpperCase()) < 0) labels.push(p.toUpperCase());
+      });
+    }
     name = name.replace(protocols, "");
     // A title-only protocol is still needed for a Home exception on repeat
     // processing when the app supplies no matching protocol/transport field.
@@ -222,9 +232,14 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     var level = hysteria ? 3 : providerLightning ? 2 : 1;
     var prefix = (flag ? flag + " " : "") + (mode === "home" ? "⚡".repeat(level) : mode === "mixed" ? "✅" : "🔑") +
       " " + (street ? "Улица" : "Дом") + " " + countryLabel(country);
-    return {server: server, index: index, level: level, preferred: level === 3 && country === "NL",
-      base: prefix + (name ? " " + name : "") +
-        (mode !== "home" && (providerLightning || hysteria) ? " ⚡" : "") + (ordinal ? " " + ordinal : "")};
+    var row = {server: server, base: prefix + (name ? " " + name : "") +
+      (mode !== "home" && (providerLightning || hysteria) ? " ⚡" : "") + (ordinal ? " " + ordinal : "")};
+    if (mode === "home") {
+      row.index = index;
+      row.level = level;
+      row.preferred = level === 3 && country === "NL";
+    }
+    return row;
   }
 
   var rows = servers.map(render).filter(function (row) { return row !== null; });
