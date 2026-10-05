@@ -3,7 +3,7 @@
 return true;
 }
 $js_filter_servers = function ($servers) {
-  return subscriptionNames($servers, "home", true);
+  return subscriptionNames($servers, "mixed", false);
 };
 // Shared source; build.cjs embeds this function into the five pasteable filters.
 function subscriptionNames(servers, mode, allowUsTurkey) {

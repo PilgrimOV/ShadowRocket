@@ -19,8 +19,9 @@ Active layout:
 - `lists/Gemini_domains.list`
 - `lists/Gemini_ip.list`
 - `scripts/subscriptions/` stores credential-free subscription display
-  scripts and their deterministic checks. Start from its `README.md`; keep
-  `Улица [резерв]` intact as the reserve group/scene naming contract.
+  scripts and their deterministic checks. For naming, filtering, installation,
+  or runtime changes, read its `README.md`; edit `naming.js` and regenerate
+  the five standalone filters with `build.cjs`.
 
 Archive layout:
 
