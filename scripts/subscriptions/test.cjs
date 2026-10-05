@@ -124,8 +124,6 @@ add('literal ordinal does not collide with generated ordinal', all, [
 add('new country remains visible', all, [title('🇻🇳 Vietnam'), title('🇷🇼 Rwanda')], null, [0,1]);
 add('useful unknown alias remains visible', all, [title('🇩🇪 Обход [FutureTransport9] - Германия')], null, [0]);
 add('city Gold Coast is not a metal alias', all, [title('🇩🇪 Germany Gold Coast')], null, [0]);
-add('legacy reserve index is replaced', ['street-reserve.js'], [title('🇩🇪 🔑 Улица [резерв] 7')],
-  ['🇩🇪 🔑 Улица Германия'], [0]);
 add('provider ordinal decoration is removed', all, [title('🇩🇪 Обход [Gold] - Германия ^~8~^')], null, [0]);
 
 add('mixed Extra is removed as a whole word', mixed, [
@@ -138,9 +136,6 @@ add('collision ordinals follow trailing lightning', mixed, [
 add('collision ordinals follow trailing lightning', ['street-reserve.js'], [
   title('🇩🇪 ⚡ Germany'), title('🇩🇪 ⚡ Germany'),
 ], ['🇩🇪 🔑 Улица Германия ⚡', '🇩🇪 🔑 Улица Германия ⚡ 2'], [0,1]);
-add('legacy abbreviation migrates to full plain country', home, [
-  title('🇩🇪 ⚡⚡⚡ Дом [Герм]'), title('🇳🇱 ⚡⚡ Дом [Нидер]'),
-], ['🇩🇪 ⚡⚡⚡ Дом Германия', '🇳🇱 ⚡⚡ Дом Нидерланды'], [0,1]);
 add('brackets are removed from useful notes', all, [
   title('🇩🇪 Germany (experimental) [speed] {fast}'),
 ], null, [0]);
@@ -149,7 +144,7 @@ add('long country aliases are consumed fully', ['street-reserve.js'], [
 ], ['🇺🇸 🔑 Улица США', '🇦🇪 🔑 Улица Объединённые Арабские Эмираты',
     '🇿🇦 🔑 Улица Южно-Африканская Республика'], [0,1,2]);
 
-add('German Home Torrent movie marker is not repeated', home, [title('🇩🇪 ⚡ Дом [Герм] Торрент 🎬')], ['🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0]);
+add('German Home Torrent movie marker is not repeated', home, [title('🇩🇪 ⚡ Дом Германия Торрент 🎬')], ['🇩🇪 ⚡ Дом Германия Торрент 🎬'], [0]);
 add('metadata version brackets do not duplicate a label', home,
   [{title:'🇨🇳 China',type:'Future(2)'}], ['🇨🇳 ⚡ Дом Китай FUTURE 2'], [0]);
 
@@ -159,9 +154,13 @@ add('Netherlands priority applies only to Hysteria in Home', home, [
 ], ['🇳🇱 ⚡⚡⚡ Дом Нидерланды', '🇩🇪 ⚡⚡⚡ Дом Германия',
     '🇩🇪 ⚡⚡ Дом Германия', '🇳🇱 ⚡⚡ Дом Нидерланды',
     '🇩🇪 ⚡ Дом Германия', '🇳🇱 ⚡ Дом Нидерланды'], [4,5,2,3,0,1]);
-add('previous full US label is normalized', ['home-us-turkey.js'],
-  [title('🇺🇸 ⚡ Дом Соединённые Штаты Америки Лос-Анджелес')],
+add('current compact US label stays unchanged', ['home-us-turkey.js'],
+  [title('🇺🇸 ⚡ Дом США Лос-Анджелес')],
   ['🇺🇸 ⚡ Дом США Лос-Анджелес'], [0]);
+add('current Russian countries normalize without a flag', ['street-reserve.js'],
+  commonCountries.map(([_,__,label])=>title(label)),
+  commonCountries.map(([_,__,label])=>'🔑 Улица '+label),
+  commonCountries.map((_,id)=>id));
 
 // Recreate the native wrapping boundary, including its later function declaration.
 function wrap(source) {
@@ -171,14 +170,23 @@ function wrap(source) {
     'if($js_filter_server($server,i,context))result.push($server);}return result;} true;';
 }
 const suites = [];
+const readableSource = fs.readFileSync(path.join(__dirname,'naming.js'),'utf8');
 for (const [file, [mode, extra]] of Object.entries(views)) {
   assert.equal(fs.readFileSync(path.join(__dirname,file),'utf8'), output(mode,extra), 'stale output ' + file);
   const context = vm.createContext({});
   assert.equal(vm.runInContext(wrap(output(mode,extra)),context), true);
   const cases = fixtures.filter(x => x.files.includes(file));
   const run = input => JSON.parse(vm.runInContext('JSON.stringify($js_filter_servers(' + JSON.stringify(input) + '))',context));
-  for (const c of cases) validate(file,c,run(c.input),run);
-  suites.push({file, source:output(mode,extra), cases});
+  const reference = vm.createContext({});
+  vm.runInContext(readableSource,reference);
+  for (const c of cases) {
+    const result = run(c.input);
+    assert.deepEqual(result,JSON.parse(vm.runInContext('JSON.stringify(subscriptionNames(' +
+      JSON.stringify(c.input) + ',' + JSON.stringify(mode) + ',' + extra + '))',reference)),
+      file + ': ' + c.name + ' compact/readable equivalence');
+    validate(file,c,result,run);
+  }
+  suites.push({file, mode, extra, source:output(mode,extra), cases});
   console.log('PASS: ' + file + ' (' + cases.length + ' scenarios)');
 }
 function validate(file, c, result, run) {
@@ -205,15 +213,18 @@ if (process.argv.includes('--native')) {
   assert(i>=0,'installed wrapper not found; recheck the integration boundary');
   const template=lines.slice(i,i+2).join('\n');
   assert(template.includes('function $js_filter_servers($servers)') && template.split('%@').length===2,'installed wrapper changed');
-  const inputs=suites.map(s=>({file:s.file,source:template.replace('%@',()=>s.source),cases:s.cases}));
-  const script="ObjC.import('JavaScriptCore');\nvar suites="+JSON.stringify(inputs)+";\nvar outputs=suites.map(function(s){var c=$.JSContext.alloc.init;c.evaluateScript(s.source);return {file:s.file,results:s.cases.map(function(t){var expr='JSON.stringify($js_filter_servers('+JSON.stringify(t.input)+'))';var first=JSON.parse(ObjC.unwrap(c.evaluateScript(expr).toObject));var second=JSON.parse(ObjC.unwrap(c.evaluateScript('JSON.stringify($js_filter_servers('+JSON.stringify(first)+'))').toObject));return {first:first,second:second};})};});\nJSON.stringify(outputs);\n";
+  const inputs=suites.map(s=>({file:s.file,mode:s.mode,extra:s.extra,source:template.replace('%@',()=>s.source),referenceSource:readableSource,cases:s.cases}));
+  const script="ObjC.import('JavaScriptCore');\nvar suites="+JSON.stringify(inputs)+";\nvar outputs=suites.map(function(s){var c=$.JSContext.alloc.init;c.evaluateScript(s.source);var reference=$.JSContext.alloc.init;reference.evaluateScript(s.referenceSource);return {file:s.file,results:s.cases.map(function(t){var expr='JSON.stringify($js_filter_servers('+JSON.stringify(t.input)+'))';var first=JSON.parse(ObjC.unwrap(c.evaluateScript(expr).toObject));var second=JSON.parse(ObjC.unwrap(c.evaluateScript('JSON.stringify($js_filter_servers('+JSON.stringify(first)+'))').toObject));var referenceResult=JSON.parse(ObjC.unwrap(reference.evaluateScript('JSON.stringify(subscriptionNames('+JSON.stringify(t.input)+','+JSON.stringify(s.mode)+','+s.extra+'))').toObject));return {first:first,second:second,reference:referenceResult};})};});\nJSON.stringify(outputs);\n";
   const folder=fs.mkdtempSync(path.join(os.tmpdir(),'shadowrocket-native-test-'));
   try {
     const target=path.join(folder,'probe.js');fs.writeFileSync(target,script);
     const results=JSON.parse(cp.execFileSync('/usr/bin/osascript',['-l','JavaScript',target],{encoding:'utf8',maxBuffer:16*1024*1024}));
     for (const suite of results) {
       const cases=suites.find(s=>s.file===suite.file).cases;
-      suite.results.forEach((r,i)=>{validate(suite.file,cases[i],r.first,()=>r.second);});
+      suite.results.forEach((r,i)=>{
+        assert.deepEqual(r.first,r.reference,suite.file+': '+cases[i].name+' native compact/readable equivalence');
+        validate(suite.file,cases[i],r.first,()=>r.second);
+      });
     }
     console.log('PASS: all five filters in JavaScriptCore using the installed native wrapper');
   } finally { fs.rmSync(folder,{recursive:true,force:true}); }

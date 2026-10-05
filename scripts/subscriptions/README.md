@@ -19,9 +19,11 @@ Country names are Russian and bracket-free; full names are used except `США`.
 The shared vocabulary in `naming.js` uses, for example, `Нидерланды`,
 `Германия`, and `США`. A flag takes precedence over
 country spelling; recognized names are a fallback when the flag is missing.
-Other legacy abbreviations are recognized on input but never rendered. Unknown
-countries stay visible. For an unlisted flag, `Intl.DisplayNames` supplies
-the full Russian name; without that API the country code remains visible.
+The old abbreviated/bracketed output and `[резерв]` suffix are no longer
+supported as input. Provider country spellings and useful notes remain
+recognized. Unknown countries stay visible. For an unlisted flag,
+`Intl.DisplayNames` supplies the full Russian name; without that API the country
+code remains visible.
 City spelling is preserved. Known material aliases and provider decoration
 are removed; unfamiliar meaningful notes stay visible as plain text.
 The mixed views remove the standalone word `Extra` case-insensitively.
@@ -84,9 +86,14 @@ exclude Home Netherlands with `^(?!.*Дом\s+Нидерланды).*$` instead.
 
 ## Source and verification
 
-Edit `naming.js` and the five view settings in `build.cjs`, then regenerate:
+Keep `naming.js` readable; edit it and the five view settings in `build.cjs`.
+The pinned [Terser](https://github.com/terser/terser#api-reference) build dependency
+removes formatting/comments and shortens local identifiers (`compress: false`);
+it does not rewrite logic or rename fields. Only the five pasteable outputs
+are compact. Install the build dependency in this directory, then regenerate:
 
 ```sh
+npm ci --prefix scripts/subscriptions --ignore-scripts --no-audit --no-fund
 node scripts/subscriptions/build.cjs
 node scripts/subscriptions/build.cjs --check
 node scripts/subscriptions/test.cjs
@@ -98,7 +105,9 @@ extracts the actual filter wrapper and runs synthetic cases in JavaScriptCore;
 `SHADOWROCKET_EXECUTABLE` can select another installed binary. The ordinary
 check uses an equivalent wrapper in Node's VM. Both check retention, ordering,
 markers, country normalization, unique names, unchanged connection fields,
-and repeated processing. No private subscription data is read by these checks.
+and repeated processing. Both engines also compare compact output with the
+readable source for every fixture. No private subscription data is read by
+these checks.
 
 The generated files deliberately close the native per-node body, assign the
 whole-list `$js_filter_servers` entry, and leave a tail for the native wrapper
@@ -117,8 +126,9 @@ on an untested device/version.
 
 Save the existing subscription script, paste one whole generated file into
 the matching subscription's Script field, and refresh **from the provider**.
-A fresh list is needed to recover original role/alias/protocol information
-already erased by older scripts and to recalculate current collision ordinals.
+A fresh list is required; the old abbreviated/bracketed output is not an
+input migration path. Refreshing also recovers original role/alias/protocol
+information already erased by older scripts and recalculates collision ordinals.
 Check the visible nodes and group/scene membership. To roll back, restore the
 previous script and refresh again. The five files can be copied to other
 devices with the matching Shadowrocket script interface.

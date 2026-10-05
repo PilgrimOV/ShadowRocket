@@ -1,101 +1,101 @@
 // Shared source; build.cjs embeds this function into the five pasteable filters.
 function subscriptionNames(servers, mode, allowUsTurkey) {
   var vocabulary = {
-    NL:["Нидерланды", "Нидер"],
-    DE:["Германия", "Герм"],
-    FR:["Франция", "Фран"],
-    AT:["Австрия", "Австр"],
-    FI:["Финляндия", "Финл"],
-    SE:["Швеция", "Швец"],
-    CH:["Швейцария", "Швейц"],
-    NO:["Норвегия", "Норв"],
-    HU:["Венгрия", "Венгр"],
-    SK:["Словакия", "Слова"],
-    SI:["Словения", "Слове"],
-    RO:["Румыния", "Рум"],
-    PL:["Польша", "Поль"],
-    CZ:["Чехия", "Чех"],
-    DK:["Дания", "Дан"],
-    EE:["Эстония", "Эстон"],
-    ES:["Испания", "Исп"],
-    IT:["Италия", "Итал"],
-    IE:["Ирландия", "Ирл"],
-    LT:["Литва", "Литва"],
-    LV:["Латвия", "Латв"],
-    LU:["Люксембург", "Люкс"],
-    MD:["Молдова", "Молд"],
-    RS:["Сербия", "Серб"],
-    TR:["Турция", "Турц"],
-    US:["США", "Соединённые Штаты Америки"],
-    RU:["Россия", "Рос"],
-    BY:["Беларусь", "Белар"],
-    JP:["Япония", "Япон"],
-    BE:["Бельгия", "Белг"],
-    BG:["Болгария", "Болг"],
-    GB:["Великобритания", "Брит"],
-    HR:["Хорватия", "Хорв"],
-    KZ:["Казахстан", "Казах"],
-    NG:["Нигерия", "Нигер"],
-    CA:["Канада", "Канад"],
-    UA:["Украина", "Укра"],
-    IL:["Израиль", "Изр"],
-    AU:["Австралия", "Австл"],
-    SG:["Сингапур", "Синг"],
-    BR:["Бразилия", "Браз"],
-    MX:["Мексика", "Мекс"],
-    PT:["Португалия", "Порт"],
-    MY:["Малайзия", "Малай"],
-    KR:["Южная Корея", "Корея"],
-    ZA:["Южно-Африканская Республика", "ЮАР"],
-    HK:["Гонконг", "Гонк"],
-    AR:["Аргентина", "Арген"],
-    CO:["Колумбия", "Колум"],
-    IN:["Индия", "Индия"],
-    AE:["Объединённые Арабские Эмираты", "ОАЭ"],
-    PE:["Перу", "Перу"],
-    GR:["Греция", "Грец"],
-    KG:["Кыргызстан", "Кирг"],
-    BH:["Бахрейн", "Бахр"],
-    SA:["Саудовская Аравия", "Сауд"],
-    TH:["Таиланд", "Таил"],
-    QA:["Катар", "Катар"],
-    CR:["Коста-Рика", "Коста"],
-    EC:["Эквадор", "Эквад"],
-    ID:["Индонезия", "Индон"],
-    PK:["Пакистан", "Пакис"],
-    IQ:["Ирак", "Ирак"],
-    IS:["Исландия", "Исл"],
-    CL:["Чили", "Чили"],
-    GE:["Грузия", "Груз"],
-    UZ:["Узбекистан", "Узбек"],
-    MK:["Северная Македония", "Макед"],
-    CY:["Кипр", "Кипр"],
-    KH:["Камбоджа", "Камб"],
-    BD:["Бангладеш", "Бангл"],
-    TW:["Тайвань", "Тайв"],
-    PH:["Филиппины", "Филип"],
-    AL:["Албания", "Алб"],
-    BA:["Босния и Герцеговина", "Босни"],
-    AZ:["Азербайджан", "Азерб"],
-    CN:["Китай", "Китай"],
-    AQ:["Антарктида", "Антар"],
-    TJ:["Таджикистан", "Тадж"],
-    EG:["Египет", "Егип"],
-    MN:["Монголия", "Монг"],
-    BN:["Бруней", "Бруне"],
-    LK:["Шри-Ланка", "ШриЛ"],
-    SS:["Южный Судан", "ЮСуд"],
-    LI:["Лихтенштейн", "Лихт"],
-    VN:["Вьетнам", "Вьетн"]
+    NL:"Нидерланды",
+    DE:"Германия",
+    FR:"Франция",
+    AT:"Австрия",
+    FI:"Финляндия",
+    SE:"Швеция",
+    CH:"Швейцария",
+    NO:"Норвегия",
+    HU:"Венгрия",
+    SK:"Словакия",
+    SI:"Словения",
+    RO:"Румыния",
+    PL:"Польша",
+    CZ:"Чехия",
+    DK:"Дания",
+    EE:"Эстония",
+    ES:"Испания",
+    IT:"Италия",
+    IE:"Ирландия",
+    LT:"Литва",
+    LV:"Латвия",
+    LU:"Люксембург",
+    MD:"Молдова",
+    RS:"Сербия",
+    TR:"Турция",
+    US:"США",
+    RU:"Россия",
+    BY:"Беларусь",
+    JP:"Япония",
+    BE:"Бельгия",
+    BG:"Болгария",
+    GB:"Великобритания",
+    HR:"Хорватия",
+    KZ:"Казахстан",
+    NG:"Нигерия",
+    CA:"Канада",
+    UA:"Украина",
+    IL:"Израиль",
+    AU:"Австралия",
+    SG:"Сингапур",
+    BR:"Бразилия",
+    MX:"Мексика",
+    PT:"Португалия",
+    MY:"Малайзия",
+    KR:"Южная Корея",
+    ZA:"Южно-Африканская Республика",
+    HK:"Гонконг",
+    AR:"Аргентина",
+    CO:"Колумбия",
+    IN:"Индия",
+    AE:"Объединённые Арабские Эмираты",
+    PE:"Перу",
+    GR:"Греция",
+    KG:"Кыргызстан",
+    BH:"Бахрейн",
+    SA:"Саудовская Аравия",
+    TH:"Таиланд",
+    QA:"Катар",
+    CR:"Коста-Рика",
+    EC:"Эквадор",
+    ID:"Индонезия",
+    PK:"Пакистан",
+    IQ:"Ирак",
+    IS:"Исландия",
+    CL:"Чили",
+    GE:"Грузия",
+    UZ:"Узбекистан",
+    MK:"Северная Македония",
+    CY:"Кипр",
+    KH:"Камбоджа",
+    BD:"Бангладеш",
+    TW:"Тайвань",
+    PH:"Филиппины",
+    AL:"Албания",
+    BA:"Босния и Герцеговина",
+    AZ:"Азербайджан",
+    CN:"Китай",
+    AQ:"Антарктида",
+    TJ:"Таджикистан",
+    EG:"Египет",
+    MN:"Монголия",
+    BN:"Бруней",
+    LK:"Шри-Ланка",
+    SS:"Южный Судан",
+    LI:"Лихтенштейн",
+    VN:"Вьетнам"
   };
   var extraNames = {
-    RU:"Россия|Russia", BY:"Беларусь|Белоруссия|Belarus", JP:"Япония|Japan",
-    US:"США|USA|United States|United States of America", GB:"Великобритания|Great Britain|UK",
-    NL:"Нидерланды|Netherlands|Holland|Голландия", KR:"Южная Корея|South Korea",
-    KG:"Киргизия|Кыргызстан", ZA:"ЮАР|Южная Африка", AE:"ОАЭ|UAE",
+    RU:"Russia", BY:"Белоруссия|Belarus", JP:"Japan",
+    US:"USA|United States|United States of America", GB:"Great Britain|UK",
+    NL:"Netherlands|Holland|Голландия", KR:"South Korea",
+    KG:"Киргизия", ZA:"ЮАР|Южная Африка", AE:"ОАЭ|UAE",
     CZ:"Czech Republic", BA:"Bosnia|Босния", MK:"Македония|Macedonia", MD:"Молдавия",
-    CN:"Китай|China", TR:"Турция|Turkey|Türkiye", HK:"Гонконг|Hong Kong",
-    TW:"Тайвань|Taiwan", VN:"Вьетнам|Vietnam"
+    CN:"China", TR:"Turkey|Türkiye", HK:"Hong Kong",
+    TW:"Taiwan", VN:"Vietnam"
   };
   var countries = {}, codes = Object.keys(vocabulary), letters = "A-Za-zА-Яа-яЁё", locales;
   try { locales = [new Intl.DisplayNames(["ru"], {type:"region"}), new Intl.DisplayNames(["en"], {type:"region"})]; } catch (_) {}
@@ -107,9 +107,8 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     if (locales) {
       try { full = locales[0].of(code); names.push(full, locales[1].of(code)); } catch (_) {}
     }
-    var known = vocabulary[code], label = known ? known[0] : full || code;
+    var label = vocabulary[code] || full || code;
     names.push(label);
-    if (known) names.push(known[1]);
     names = names.filter(Boolean).sort(function (a, b) { return b.length - a.length; });
     return countries[code] = {label:label.replace(/[\[\](){}]/g, ""), pattern:new RegExp("(^|[^" + letters + "])(?:" +
       names.map(escape).join("|") + ")(?=$|[^" + letters + "])", "gi")};
@@ -161,29 +160,23 @@ function subscriptionNames(servers, mode, allowUsTurkey) {
     var original = String(server.title || "").replace(/[\uFE0E\uFE0F\u200B]/g, ""), flag = (original.match(flags) || [""])[0];
     if (unavailable(original)) return null;
     var name = original.replace(flags, "").trim();
-    var formatted = name.match(/^(⚡{1,3}|✅|🔑)\s*(Дом|Улица)\s*\[([^\]]+)\]\s*(.*)$/u);
-    if (!formatted) {
-      var plain = name.match(/^(⚡{1,3}|✅|🔑)\s*(Дом|Улица)\s+(.+)$/u);
-      if (plain) formatted = [plain[0], plain[1], plain[2], "", plain[3]];
-    }
-    var providerLightning = /⚡/.test(name), oldLevel = 0;
+    var formatted = name.match(/^(⚡{1,3}|✅|🔑)\s*(Дом|Улица)\s+(.+)$/u);
+    var providerLightning = /⚡/.test(name), renderedLevel = 0;
     if (formatted) {
-      oldLevel = /^⚡/.test(formatted[1]) ? formatted[1].length : 0;
-      providerLightning = oldLevel ? oldLevel === 2 : /⚡/.test(formatted[4]);
-      name = (formatted[3] ? formatted[3] + " " : "") + formatted[4];
+      renderedLevel = /^⚡/.test(formatted[1]) ? formatted[1].length : 0;
+      providerLightning = renderedLevel ? renderedLevel === 2 : /⚡/.test(formatted[3]);
+      name = formatted[3];
     }
-    name = name.replace(/🔑\s*Улица\s*\[резерв\]/g, "");
     var roleTitle = original.replace(/(?:\b(?:no|non|not|without)[\s_-]*|без\s*)(?:whitelist|street|улиц[аы])/gi, "");
     var street = mode === "street" || (mode === "mixed" &&
       ((formatted && formatted[2] === "Улица") || /whitelist/i.test(roleTitle) ||
        /(?:^|[^A-Za-zА-Яа-яЁё])(?:Улица|Street)(?=$|[^A-Za-zА-Яа-яЁё])/i.test(roleTitle)));
     var country = countryOf(flag, name);
     countryInfo(country);
-    if (formatted && (formatted[3] === "резерв" || formatted[3] === "?")) name = formatted[4];
     if (formatted && !country) name = name.replace(/^\?\s*/, "");
     if (!street && /^(RU|BY|JP)$/.test(country)) return null;
     var type = text(server.type), transport = text(server.obfs) || text(server.transport);
-    var hysteria = oldLevel === 3 || new RegExp(hySource, "i").test(name + " " + type);
+    var hysteria = renderedLevel === 3 || new RegExp(hySource, "i").test(name + " " + type);
     var metadataSpecial = !!((type && !ordinary.test(type)) || (transport && !ordinary.test(transport)));
     var explicitProtocols = stripCountry(name, country).match(protocols) || [];
     var protocolSpecial = explicitProtocols.some(function (p) { return !/^(vless|reality|xtls)$/i.test(p); });
