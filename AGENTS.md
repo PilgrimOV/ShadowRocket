@@ -64,3 +64,13 @@ responses unless the user explicitly asks for them.
 Before claiming a config/list is ready, read the edited file again and run the
 narrowest relevant check available. If Shadowrocket UI or runtime verification is
 needed, say that clearly instead of guessing.
+
+## Agent skills
+
+### Issue tracker
+
+Project specs, implementation tickets, and Wayfinder maps live under `.scratch/`; see [local tracker rules](docs/agents/issue-tracker.md).
+
+### Domain docs
+
+This is a single-context project; see [domain documentation rules](docs/agents/domain.md).
