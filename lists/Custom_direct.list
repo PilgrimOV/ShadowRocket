@@ -330,6 +330,8 @@ DOMAIN-SUFFIX,myoffice.team
 DOMAIN-SUFFIX,tarantool.io
 
 # Разные
+DOMAIN-SUFFIX,models.dev
+DOMAIN-SUFFIX,opencode.ai
 DOMAIN-SUFFIX,ldxp.cn
 DOMAIN-SUFFIX,muzvox.org
 DOMAIN-SUFFIX,mp3party.net
